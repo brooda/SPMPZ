@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+{% include license.html %}
+
+<html>
+	{% include header.html %}
+	<body>
+
+	<!-- Header -->
+		<div id="header">
+			{% include menu_pl.html %}
+				
+			<div id="logo">
+				{{ page.subpage }}
+			</div>
+		</div>
+	<!-- Header --> 
+
+	{{content}}
+
+	<!-- Tweet -->
+		<div id="tweet">
+			<div class="container">
+				<section>
+					<blockquote></blockquote>
+				</section>
+			</div>
+		</div>
+	<!-- /Tweet -->
+
+		{% include footer_pl.html %}
+	</body>
+</html>
