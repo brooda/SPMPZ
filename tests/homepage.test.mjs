@@ -50,6 +50,22 @@ test("homepage uses secure external resources", () => {
   assert.doesNotMatch(html, /(?:src|href)=["']http:\/\//i);
 });
 
+test("homepage local links and images point to existing files", () => {
+  const references = [...html.matchAll(/(?:src|href)=["']([^"']+)["']/gi)]
+    .map((match) => match[1])
+    .filter((value) => !/^(?:https?:|mailto:|#)/i.test(value));
+
+  for (const reference of references) {
+    const relativePath = decodeURIComponent(reference.split(/[?#]/, 1)[0]);
+    assert.equal(existsSync(resolve(root, relativePath)), true, `Missing local file: ${relativePath}`);
+  }
+});
+
+test("the top anchor is independent from the sticky header", () => {
+  assert.match(html, /<div class="page-top" id="top"/);
+  assert.doesNotMatch(html, /<header[^>]+id="top"/);
+});
+
 test("stylesheet defines both designs and accessibility adaptations", () => {
   assert.equal(existsSync(cssPath), true, "Modern stylesheet is missing");
   const css = readFileSync(cssPath, "utf8");
@@ -63,4 +79,26 @@ test("stylesheet defines both designs and accessibility adaptations", () => {
   ]) {
     assert.match(css, pattern);
   }
+});
+
+test("both variants follow the Genesio MD3 token model with green and blue palettes", () => {
+  const css = readFileSync(cssPath, "utf8");
+
+  for (const token of [
+    "--md-sys-shape-corner-medium",
+    "--md-sys-shape-corner-large",
+    "--md-sys-spacing-4",
+    "--md-sys-motion-easing-standard",
+    "--md-sys-typescale-font-family-headline",
+    "--md-sys-color-surface-container",
+    "--md-sys-elevation-2",
+  ]) {
+    assert.ok(css.includes(token), `Missing Genesio token: ${token}`);
+  }
+
+  assert.match(css, /html\[data-variant=["']a["']\][\s\S]*--md-sys-color-primary:\s*#176b4d/i);
+  assert.match(css, /html\[data-variant=["']b["']\][\s\S]*--md-sys-color-primary:\s*#315f9f/i);
+  assert.doesNotMatch(css, /#b3312d|#ff6b4a|#c7f36b/i);
+  assert.match(html, /<span>Zielony<\/span>/);
+  assert.match(html, /<span>Niebieski<\/span>/);
 });

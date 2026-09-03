@@ -72,7 +72,7 @@ function buildPage({ search = "", stored = null } = {}) {
       return {
         "nav-toggle": navToggle,
         "primary-navigation": nav,
-        top: header,
+        "site-header": header,
       }[id] ?? null;
     },
     querySelector(selector) {
@@ -129,7 +129,7 @@ test("initializer applies query choice and keeps controls synchronized", () => {
   assert.equal(page.root.dataset.variant, "b");
   assert.equal(page.buttonA.getAttribute("aria-pressed"), "false");
   assert.equal(page.buttonB.getAttribute("aria-pressed"), "true");
-  assert.equal(page.theme.getAttribute("content"), "#071b2c");
+  assert.equal(page.theme.getAttribute("content"), "#e3eaf4");
   assert.equal(page.classes.has("js"), true);
 });
 

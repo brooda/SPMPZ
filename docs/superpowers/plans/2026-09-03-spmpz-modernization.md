@@ -4,7 +4,7 @@
 
 **Goal:** Replace the SPMPZ homepage with one accessible static site that offers two complete visual variants, highlights Twin Green, and documents a practical route to multi-author publishing.
 
-**Architecture:** A single semantic `index.html` remains the canonical content source. `css/modern.css` provides two selector-scoped design systems keyed by `data-variant`, while `js/modern-site.mjs` provides progressive enhancement for variant persistence, shareable URLs, and the mobile menu. The legacy pages and documents stay in place as an archive, and GPT Sites is used as a second presentation surface after the local site passes verification.
+**Architecture:** A single semantic `index.html` remains the canonical content source. `css/modern.css` adapts the Genesio / Promethic UI Material Design 3 token and component model into green Variant A and blue Variant B, keyed by `data-variant`, while `js/modern-site.mjs` provides progressive enhancement for variant persistence, shareable URLs, and the mobile menu. The legacy pages and documents stay in place as an archive, and GPT Sites is used as a second presentation surface after the local site passes verification.
 
 **Tech Stack:** HTML5, CSS3, browser-native ES modules, Node.js built-in test runner, GitHub Pages, GPT Sites
 
@@ -122,7 +122,7 @@ git commit -m "feat: rebuild SPMPZ homepage content"
 
 ---
 
-### Task 2: Build two distinct responsive design systems
+### Task 2: Build two Genesio-based responsive variants
 
 **Files:**
 - Modify: `tests/homepage.test.mjs`
@@ -158,7 +158,7 @@ Run: `node --test tests/homepage.test.mjs`
 
 Expected: FAIL with `ENOENT` for `css/modern.css`.
 
-- [ ] **Step 3: Generate optimized repository-owned image derivatives**
+- [x] **Step 3: Generate optimized repository-owned image derivatives**
 
 ```bash
 mkdir -p images/site
@@ -168,19 +168,16 @@ sips -s format jpeg -s formatOptions 80 -Z 1440 images/JB/JB1.jpg --out images/s
 
 Keep the originals unchanged. Reference both derivatives with explicit dimensions, useful alternative text, and lazy loading for the non-hero image.
 
-- [ ] **Step 4: Implement shared CSS and Variant A**
+- [x] **Step 4: Implement shared Genesio CSS and green Variant A**
 
-Define a reset, fluid type scale, `--page-gutter`, `--content-width`, accessible focus ring, reusable buttons/cards, and image treatments. Variant A must use an ivory/red/navy civic palette, serif display headings, asymmetrical editorial hero, restrained borders, and horizontally flowing news/partner sections.
+Define a reset, fluid type scale, `--page-gutter`, `--content-width`, accessible focus ring, reusable buttons/cards, and image treatments. Import the Genesio conventions: MD3 color roles, 4 px spacing tokens, 16/24/32 px shapes, Manrope/Inter typography, tonal surfaces, pill-shaped actions, and restrained elevation. Variant A uses green `#176b4d`, light green-gray surfaces, and a balanced split hero.
 
 ```css
 html[data-variant="a"] {
-  --ink: #17213a;
-  --paper: #f7f2e8;
-  --surface: #fffdf8;
-  --accent: #b3312d;
-  --accent-strong: #81231f;
-  --highlight: #d8a735;
-  --display: Georgia, "Times New Roman", serif;
+  --md-sys-color-primary: #176b4d;
+  --md-sys-color-on-primary: #fff;
+  --md-sys-color-primary-container: #bcefd4;
+  --md-sys-color-background: #e7efe9;
 }
 
 :focus-visible {
@@ -189,19 +186,16 @@ html[data-variant="a"] {
 }
 ```
 
-- [ ] **Step 5: Implement Variant B as a complete alternate composition**
+- [x] **Step 5: Implement blue Variant B as an alternate composition**
 
-Variant B must use a deep blue/coral/lime palette, bold system display type, rounded cards, a dark image-led hero, country badges, more prominent calls to action, and CSS Grid areas that reorder the lead story and action rail without changing document order.
+Variant B uses blue `#315f9f`, arctic blue-gray surfaces, a wide image-led hero, country badges, and a more structured card composition. It keeps the same Genesio tokens and accessibility rules while CSS Grid reorders the lead story without changing document order.
 
 ```css
 html[data-variant="b"] {
-  --ink: #f8fbff;
-  --paper: #071b2c;
-  --surface: #0d2b43;
-  --accent: #ff6b4a;
-  --accent-strong: #ff8c70;
-  --highlight: #c7f36b;
-  --display: Inter, ui-sans-serif, system-ui, sans-serif;
+  --md-sys-color-primary: #315f9f;
+  --md-sys-color-on-primary: #fff;
+  --md-sys-color-primary-container: #d6e4ff;
+  --md-sys-color-background: #e3eaf4;
 }
 
 @media (prefers-reduced-motion: reduce) {

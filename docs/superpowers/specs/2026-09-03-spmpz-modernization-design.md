@@ -24,23 +24,23 @@ Nawigacja będzie prowadziła do sekcji na tej samej stronie. Istniejące strony
 
 ### Dwa warianty na jednej stronie
 
-Oba warianty wykorzystają tę samą treść i semantyczną strukturę HTML, ale otrzymają osobne systemy wizualne oraz odmienne rozmieszczenie najważniejszych elementów.
+Oba warianty wykorzystają tę samą treść i semantyczną strukturę HTML. Ich wspólną bazą jest design system Genesio / Promethic UI oparty na Material Design 3: Manrope i Inter, siatka odstępów co 4 px, role kolorystyczne powierzchni, promienie 16/24/32 px, tonalne kontenery, łagodne cienie oraz przyciski typu filled, tonal i outlined. Warianty różnią się kolorem i rozmieszczeniem najważniejszych elementów, ale pozostają częścią jednego systemu.
 
-#### Wariant A — „Obywatelski / redakcyjny”
+#### Wariant A — „Genesio Green”
 
-- jasna, spokojna paleta inspirowana Zamościem,
-- elegancka typografia i dużo przestrzeni,
-- układ przypominający nowoczesny magazyn miejski,
-- nacisk na wiarygodność, historię, partnerstwa i uporządkowane aktualności,
-- fotografie architektury jako główne elementy wizualne.
+- jasna zielona paleta oparta na rolach kolorystycznych MD3,
+- miękkie zielone kontenery i spokojny, otwarty układ,
+- dzielony hero z tekstem i fotografią Zamościa,
+- karty o dużych promieniach i subtelnej elewacji,
+- nacisk na relacje mieszkańców, partnerstwa i dostępność.
 
-#### Wariant B — „Społecznościowy / dynamiczny”
+#### Wariant B — „Genesio Blue”
 
-- mocniejszy kolor i bardziej energiczna typografia,
-- karty, znaczniki krajów i wyraziste wezwania do działania,
-- wyraźne eksponowanie faktycznych miast i krajów partnerskich wskazanych w materiałach SPMPZ,
-- projekty, wymiany oraz ludzie przedstawieni jako aktywna sieć współpracy,
-- bardziej zwarty i dynamiczny układ strony.
+- jasna arktyczna paleta i główny niebieski kolor znany z Genesio,
+- szeroki niebieski hero z fotografią w tle i białą treścią,
+- bardziej uporządkowane, geometryczne karty informacyjne,
+- znaczniki krajów oraz wyraźne wezwania do działania,
+- ten sam język komponentów i dostępności co w wariancie zielonym.
 
 Widoczny przełącznik A/B będzie dostępny w nagłówku. Wybór zostanie zapisany w `localStorage`. Parametr adresu `?variant=a` lub `?variant=b` pozwoli otworzyć i udostępnić konkretną wersję. Bez JavaScript strona pokaże wariant A i zachowa dostęp do całej treści.
 
@@ -99,7 +99,7 @@ Po ukończeniu i lokalnej weryfikacji strona zostanie także przygotowana i opub
 
 ## Analiza publikowania przez członków
 
-System publikacji wieloautorskiej nie zostanie wdrożony w tej zmianie. Po ukończeniu strony powstanie osobna analiza porównująca co najmniej:
+System publikacji wieloautorskiej nie zostanie wdrożony w tej zmianie. Po ukończeniu strony powstanie osobna analiza rozwiązania, które pozwoli uprawnionym osobom edytować wszystkie strony i kolekcje treści — nie tylko dodawać aktualności. Zakres panelu obejmie stronę główną, O nas, partnerów, projekty, kontakt, nawigację, dokumenty oraz posty. Analiza porówna co najmniej:
 
 - panel CMS zapisujący zatwierdzone treści do repozytorium,
 - zewnętrzny CMS z kontami redaktorów,
@@ -107,9 +107,9 @@ System publikacji wieloautorskiej nie zostanie wdrożony w tej zmianie. Po ukoń
 
 Porównanie obejmie łatwość obsługi przez nietechniczne osoby, role i zatwierdzanie wpisów, bezpieczeństwo kont, kopie zapasowe, koszty, obsługę zdjęć oraz nakład administracyjny. Rekomendacja nie będzie wymagać migracji obecnej strony, jeśli wystarczy dołączenie wybranego źródła aktualności.
 
-## Poza zakresem
+## Poza zakresem bieżącego prototypu
 
-- uruchomienie kont użytkowników i panelu redakcyjnego,
+- uruchomienie kont użytkowników i panelu redakcyjnego dla wszystkich podstron,
 - automatyczne importowanie wpisów z Facebooka,
 - pełne tłumaczenie oraz przebudowa wszystkich stron angielskich,
 - zmiana domeny i konfiguracji DNS,
