@@ -232,15 +232,15 @@ h3 {
 }
 
 h1 {
-  font-size: clamp(2.65rem, 5vw, 4.75rem);
+  font-size: clamp(2.2rem, 3.8vw, 3.6rem);
 }
 
 h2 {
-  font-size: clamp(2.15rem, 4vw, 3.5rem);
+  font-size: clamp(1.75rem, 2.8vw, 2.75rem);
 }
 
 h3 {
-  font-size: clamp(1.35rem, 2vw, 2rem);
+  font-size: clamp(1.2rem, 1.6vw, 1.7rem);
 }
 
 [id] {
@@ -553,7 +553,7 @@ h3 {
 }
 
 .hero__copy h1.hero-title--compact {
-  font-size: clamp(2.3rem, 4.2vw, 4rem);
+  font-size: clamp(2rem, 3.5vw, 3.25rem);
 }
 
 .hero__lead {
@@ -1125,17 +1125,12 @@ h3 {
   gap: clamp(24px, 5vw, 72px);
 }
 
-.partner-map__story h3,
 .partner-map__story p {
   margin: 0;
 }
 
-.partner-map__story h3 {
-  font-size: clamp(1.35rem, 2.5vw, 2.2rem);
-  line-height: 1.12;
-}
-
 .partner-map__story > p:last-child {
+  grid-column: 2 / -1;
   max-width: 46rem;
   color: var(--md-sys-color-on-surface-variant);
 }
@@ -2047,7 +2042,7 @@ h3 {
 .page-hero h1 {
   max-width: 13ch;
   margin: 0;
-  font-size: clamp(3rem, 7.5vw, 7rem);
+  font-size: clamp(2.5rem, 5vw, 4.75rem);
 }
 
 .page-hero__lead {
@@ -2070,7 +2065,7 @@ h3 {
   bottom: -0.28em;
   color: color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent);
   font-family: var(--font-headline);
-  font-size: clamp(8rem, 22vw, 20rem);
+  font-size: clamp(6rem, 14vw, 12rem);
   font-weight: 800;
   letter-spacing: -0.12em;
   line-height: 0.7;
@@ -2288,7 +2283,7 @@ h3 {
   max-width: 18ch;
   margin: 0;
   font-family: var(--font-headline);
-  font-size: clamp(1.8rem, 4vw, 3.8rem);
+  font-size: clamp(1.6rem, 3vw, 2.75rem);
   font-weight: 700;
   line-height: 1.1;
 }
@@ -2574,11 +2569,11 @@ h3 {
   }
 
   .hero__copy h1 {
-    font-size: clamp(2.4rem, 12vw, 3.75rem);
+    font-size: clamp(2.1rem, 9vw, 3.1rem);
   }
 
   .hero__copy h1.hero-title--compact {
-    font-size: clamp(2.1rem, 10vw, 3.25rem);
+    font-size: clamp(1.85rem, 8.5vw, 2.8rem);
   }
 
   .hero__actions {

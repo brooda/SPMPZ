@@ -93,13 +93,17 @@ test("partner map story leads with people rather than organisation counts", () =
 
   assert.match(
     polishPartners,
-    /<h2 id="partners-title">Więcej niż tylko miasta na mapie<\/h2>/,
+    /<h2 id="partners-title">Na mapie dzielą je kilometry\. Łączą je ludzie\.<\/h2>/,
   );
   assert.doesNotMatch(polishPartners, /<h2 id="partners-title">Miasta nie tylko na mapie<\/h2>/);
-  assert.match(polishPartners, /<h3>Na mapie dzielą je kilometry\. Łączą je ludzie\.<\/h3>/);
+  assert.doesNotMatch(polishPartners, /<h3>Na mapie dzielą je kilometry\. Łączą je ludzie\.<\/h3>/);
   assert.doesNotMatch(polishPartners, /Siedem miast\. Osiem organizacji przy wspólnym stole\./);
 
   assert.match(
+    englishPartners,
+    /<h2 id="partners-title">Kilometres apart on the map\. Brought together by people\.<\/h2>/,
+  );
+  assert.doesNotMatch(
     englishPartners,
     /<h3>Kilometres apart on the map\. Brought together by people\.<\/h3>/,
   );
@@ -184,14 +188,36 @@ test("only the Polish homepage uses the compact hero title", () => {
   assert.doesNotMatch(englishHtml, /hero-title--compact/);
 
   const css = readFileSync(cssPath, "utf8");
-  assert.match(
-    css,
-    /\.hero__copy h1\.hero-title--compact\s*\{[^}]*font-size:\s*clamp\(2\.3rem,\s*4\.2vw,\s*4rem\)/s,
+  const desktopMax = css.match(
+    /\.hero__copy h1\.hero-title--compact\s*\{[^}]*font-size:\s*clamp\([^,]+,[^,]+,\s*([\d.]+)rem\)/s,
   );
-  assert.match(
-    css,
-    /@media\s*\(max-width:\s*680px\)[\s\S]*?\.hero__copy h1\.hero-title--compact\s*\{[^}]*font-size:\s*clamp\(2\.1rem,\s*10vw,\s*3\.25rem\)/,
+  const mobileMax = css.match(
+    /@media\s*\(max-width:\s*680px\)[\s\S]*?\.hero__copy h1\.hero-title--compact\s*\{[^}]*font-size:\s*clamp\([^,]+,[^,]+,\s*([\d.]+)rem\)/,
   );
+
+  assert.ok(desktopMax, "Missing compact homepage title scale");
+  assert.ok(mobileMax, "Missing mobile compact homepage title scale");
+  assert.ok(Number(desktopMax[1]) <= 3.25, "Compact homepage title is too large on desktop");
+  assert.ok(Number(mobileMax[1]) <= 2.8, "Compact homepage title is too large on mobile");
+});
+
+test("sitewide headings stay within an editorial scale", () => {
+  const css = readFileSync(cssPath, "utf8");
+  const headingCaps = [
+    [/(?:^|\n)h1\s*\{[^}]*font-size:\s*clamp\([^,]+,[^,]+,\s*([\d.]+)rem\)/s, 3.6, "h1"],
+    [/(?:^|\n)h2\s*\{[^}]*font-size:\s*clamp\([^,]+,[^,]+,\s*([\d.]+)rem\)/s, 2.75, "h2"],
+    [/(?:^|\n)h3\s*\{[^}]*font-size:\s*clamp\([^,]+,[^,]+,\s*([\d.]+)rem\)/s, 1.7, "h3"],
+    [/\.page-hero h1\s*\{[^}]*font-size:\s*clamp\([^,]+,[^,]+,\s*([\d.]+)rem\)/s, 4.75, "page hero"],
+    [/\.page-hero__index\s*\{[^}]*font-size:\s*clamp\([^,]+,[^,]+,\s*([\d.]+)rem\)/s, 12, "decorative page number"],
+    [/\.social-strip p,\s*\.page-cta h2\s*\{[^}]*font-size:\s*clamp\([^,]+,[^,]+,\s*([\d.]+)rem\)/s, 2.75, "call to action"],
+    [/@media\s*\(max-width:\s*680px\)[\s\S]*?\.hero__copy h1\s*\{[^}]*font-size:\s*clamp\([^,]+,[^,]+,\s*([\d.]+)rem\)/, 3.1, "mobile homepage hero"],
+  ];
+
+  for (const [pattern, cap, label] of headingCaps) {
+    const match = css.match(pattern);
+    assert.ok(match, `Missing ${label} scale`);
+    assert.ok(Number(match[1]) <= cap, `${label} exceeds ${cap}rem`);
+  }
 });
 
 test("stylesheet defines both designs and accessibility adaptations", () => {
