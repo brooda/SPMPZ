@@ -37,9 +37,14 @@ test("every Polish page has a modern English counterpart", () => {
 test("every canonical page exposes the shared accessible shell", () => {
   for (const page of canonicalPages) {
     const html = read(page);
-    for (const id of ["site-header", "nav-toggle", "primary-navigation", "variant-a", "variant-b", "main-content"]) {
+    for (const id of ["site-header", "nav-toggle", "primary-navigation", "variant-a", "variant-b", "variant-c", "main-content"]) {
       assert.match(html, new RegExp(`id="${id}"`), `${page} missing #${id}`);
     }
+    assert.match(
+      html,
+      /<img class="brand__mark" src="images\/site\/spmpz-logo\.png"[^>]*alt="">/,
+      `${page} must display the association logo`,
+    );
     assert.match(html, /data-page="[a-z-]+"/);
     assert.match(html, /href="css\/modern\.css"/);
     assert.match(html, /src="js\/modern-site\.mjs"/);
@@ -155,6 +160,6 @@ test("GPT Sites contains the same canonical pages and shared presentation", () =
   for (const path of [...canonicalPages, "index_en.html", "index_enn.html", "css/modern.css", "js/modern-site.mjs"])
     assert.equal(read(`sites-preview/public/spmpz/${path}`), read(path), `Sites copy differs: ${path}`);
 
-  for (const path of ["en/index.html", "images/site/hero-zamosc.jpg", "images/site/fortress-night.jpg", "images/weaving.jpg", "report_22/report.pdf", "migration.pdf", "statute_pl.pdf"])
+  for (const path of ["en/index.html", "images/site/spmpz-logo.png", "images/site/hero-zamosc.jpg", "images/site/fortress-night.jpg", "images/weaving.jpg", "report_22/report.pdf", "migration.pdf", "statute_pl.pdf"])
     assert.ok(existsSync(resolve(root, "sites-preview/public/spmpz", path)), `Sites copy missing: ${path}`);
 });

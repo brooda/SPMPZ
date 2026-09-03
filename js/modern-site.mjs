@@ -1,8 +1,9 @@
-const VALID_VARIANTS = new Set(["a", "b"]);
+const VALID_VARIANTS = new Set(["a", "b", "c"]);
 const STORAGE_KEY = "spmpz-variant";
 const THEME_COLORS = {
   a: "#e7efe9",
   b: "#e3eaf4",
+  c: "#f6e7cf",
 };
 
 export function resolveVariant(search, stored) {

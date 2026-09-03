@@ -189,3 +189,12 @@ test("both variants follow the Genesio MD3 token model with green and blue palet
   assert.match(html, /<span>Zielony<\/span>/);
   assert.match(html, /<span>Niebieski<\/span>/);
 });
+
+test("the Zamość variant uses the logo-led fortress palette and motif", () => {
+  const css = readFileSync(cssPath, "utf8");
+
+  assert.match(css, /html\[data-variant=["']c["']\][\s\S]*--md-sys-color-primary:\s*#a92725/i);
+  assert.match(css, /html\[data-variant=["']c["']\][\s\S]*--md-sys-color-secondary:\s*#7a5b00/i);
+  assert.match(css, /\[data-variant=["']c["']\] \.hero__inner::after[\s\S]*clip-path:\s*polygon\(/i);
+  assert.match(html, /id="variant-c"[^>]+data-variant-choice="c"[^>]*>[\s\S]*?<span>Zamość<\/span>/);
+});
