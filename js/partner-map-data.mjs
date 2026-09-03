@@ -97,6 +97,10 @@ const relationshipLabels = {
   },
 };
 
+export function getPartnerMarkerLabel(city) {
+  return city.name;
+}
+
 export function renderPartnerPopup(city, lang = "pl") {
   const locale = lang === "en" ? "en" : "pl";
   const labels = relationshipLabels[locale];

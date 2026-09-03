@@ -1,4 +1,4 @@
-import { partnerCities, renderPartnerPopup } from "./partner-map-data.mjs";
+import { getPartnerMarkerLabel, partnerCities, renderPartnerPopup } from "./partner-map-data.mjs";
 
 const leaflet = globalThis.L;
 
@@ -17,14 +17,14 @@ if (leaflet) {
     }).addTo(map);
 
     const markers = new Map();
-    for (const [index, city] of partnerCities.entries()) {
-      const markerLabel = city.relationship === "host" ? "Z" : String(index).padStart(2, "0");
+    for (const city of partnerCities) {
+      const markerLabel = getPartnerMarkerLabel(city);
       const icon = leaflet.divIcon({
         className: `partner-marker partner-marker--${city.relationship}`,
         html: `<span aria-hidden="true">${markerLabel}</span>`,
-        iconSize: [38, 38],
-        iconAnchor: [19, 19],
-        popupAnchor: [0, -22],
+        iconSize: [0, 0],
+        iconAnchor: [0, 0],
+        popupAnchor: [0, -24],
       });
       const marker = leaflet.marker([city.coordinates.lat, city.coordinates.lng], {
         alt: `${city.name}, ${city.country[lang]}`,

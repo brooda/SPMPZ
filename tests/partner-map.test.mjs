@@ -37,3 +37,14 @@ test("partner popup exposes localized relationship information and available web
   assert.match(renderPartnerPopup(loughborough, "pl"), /wymiana mieszkańców/i);
   assert.match(renderPartnerPopup(loughborough, "en"), /resident exchange/i);
 });
+
+test("map markers use town names instead of numbers", async () => {
+  assert.ok(existsSync(modulePath), "Missing partner map data module");
+  const { partnerCities, getPartnerMarkerLabel } = await import(pathToFileURL(modulePath));
+  assert.equal(typeof getPartnerMarkerLabel, "function");
+
+  assert.deepEqual(
+    partnerCities.map(getPartnerMarkerLabel),
+    ["Zamość", "Bagnols-sur-Cèze", "Braunfels", "Carcaixent", "Eeklo", "Feltre", "Kiskunfélegyháza", "Newbury", "Loughborough"],
+  );
+});
