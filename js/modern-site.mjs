@@ -1,4 +1,5 @@
 const VALID_VARIANTS = new Set(["a", "b", "c"]);
+const DEFAULT_VARIANT = "c";
 const STORAGE_KEY = "spmpz-variant";
 const THEME_COLORS = {
   a: "#e7efe9",
@@ -9,12 +10,12 @@ const THEME_COLORS = {
 export function resolveVariant(search, stored) {
   const requested = new URLSearchParams(search).get("variant");
   if (VALID_VARIANTS.has(requested)) return requested;
-  return VALID_VARIANTS.has(stored) ? stored : "a";
+  return VALID_VARIANTS.has(stored) ? stored : DEFAULT_VARIANT;
 }
 
 export function withVariant(url, variant) {
   const next = new URL(url);
-  next.searchParams.set("variant", VALID_VARIANTS.has(variant) ? variant : "a");
+  next.searchParams.set("variant", VALID_VARIANTS.has(variant) ? variant : DEFAULT_VARIANT);
   return next.toString();
 }
 
@@ -51,7 +52,7 @@ export function initializeSite(doc, win) {
   };
 
   const applyVariant = (variant, persist = false) => {
-    const selected = VALID_VARIANTS.has(variant) ? variant : "a";
+    const selected = VALID_VARIANTS.has(variant) ? variant : DEFAULT_VARIANT;
     root.dataset.variant = selected;
 
     for (const button of buttons) {

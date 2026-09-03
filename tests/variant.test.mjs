@@ -13,11 +13,12 @@ test("query parameter wins over stored preference", () => {
   assert.equal(resolveVariant("?variant=c", "a"), "c");
 });
 
-test("stored valid preference is used and invalid values fall back to A", () => {
+test("stored valid preference is used and invalid values fall back to Zamość", () => {
   assert.equal(resolveVariant("", "b"), "b");
   assert.equal(resolveVariant("", "c"), "c");
-  assert.equal(resolveVariant("?variant=orange", "orange"), "a");
-  assert.equal(resolveVariant("?variant=B", null), "a");
+  assert.equal(resolveVariant("", null), "c");
+  assert.equal(resolveVariant("?variant=orange", "orange"), "c");
+  assert.equal(resolveVariant("?variant=B", null), "c");
 });
 
 test("share URL preserves unrelated query values and the hash", () => {
@@ -39,6 +40,10 @@ test("variant URL helper keeps page path and fragment", () => {
   assert.equal(
     withVariant("https://spmpz.test/about_en.html#mission", "b"),
     "https://spmpz.test/about_en.html?variant=b#mission",
+  );
+  assert.equal(
+    withVariant("https://spmpz.test/about_en.html", "orange"),
+    "https://spmpz.test/about_en.html?variant=c",
   );
 });
 
@@ -168,6 +173,17 @@ test("initializer applies query choice and keeps controls synchronized", () => {
   assert.equal(page.buttonB.getAttribute("aria-pressed"), "true");
   assert.equal(page.theme.getAttribute("content"), "#e3eaf4");
   assert.equal(page.classes.has("js"), true);
+});
+
+test("initializer uses the Zamość theme when no preference exists", () => {
+  const page = buildPage();
+
+  initializeSite(page.doc, page.win);
+
+  assert.equal(page.root.dataset.variant, "c");
+  assert.equal(page.buttonA.getAttribute("aria-pressed"), "false");
+  assert.equal(page.buttonC.getAttribute("aria-pressed"), "true");
+  assert.equal(page.theme.getAttribute("content"), "#f6e7cf");
 });
 
 test("explicit variant selection is stored and reflected in the URL", () => {

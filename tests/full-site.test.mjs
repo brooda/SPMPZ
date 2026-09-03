@@ -27,8 +27,8 @@ test("every Polish page has a modern English counterpart", () => {
 
     const polishHtml = read(polish);
     const englishHtml = read(english);
-    assert.match(polishHtml, /<html\s+lang="pl"[^>]*data-variant="a"/);
-    assert.match(englishHtml, /<html\s+lang="en"[^>]*data-variant="a"/);
+    assert.match(polishHtml, /<html\s+lang="pl"[^>]*data-variant="c"/);
+    assert.match(englishHtml, /<html\s+lang="en"[^>]*data-variant="c"/);
     assert.ok(polishHtml.includes(`href="${english}"`), `${polish} must link to ${english}`);
     assert.ok(englishHtml.includes(`href="${polish}"`), `${english} must link to ${polish}`);
   }
@@ -40,6 +40,9 @@ test("every canonical page exposes the shared accessible shell", () => {
     for (const id of ["site-header", "nav-toggle", "primary-navigation", "variant-a", "variant-b", "variant-c", "main-content"]) {
       assert.match(html, new RegExp(`id="${id}"`), `${page} missing #${id}`);
     }
+    assert.match(html, /<meta name="theme-color" content="#f6e7cf">/);
+    assert.match(html, /id="variant-a"[^>]+aria-pressed="false"/);
+    assert.match(html, /id="variant-c"[^>]+aria-pressed="true"/);
     assert.match(
       html,
       /<img class="brand__mark" src="images\/site\/spmpz-logo\.png"[^>]*alt="">/,
