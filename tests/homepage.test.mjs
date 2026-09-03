@@ -87,6 +87,20 @@ test("coverage uses concise bilingual headings and announces upcoming photos", (
   assert.doesNotMatch(englishNews, /See the event from several perspectives/);
 });
 
+test("partner map story leads with people rather than organisation counts", () => {
+  const polishPartners = section(html, "partnerzy", "projekty");
+  const englishPartners = section(englishHtml, "partnerzy", "projekty");
+
+  assert.match(polishPartners, /<h3>Na mapie dzielą je kilometry\. Łączą je ludzie\.<\/h3>/);
+  assert.doesNotMatch(polishPartners, /Siedem miast\. Osiem organizacji przy wspólnym stole\./);
+
+  assert.match(
+    englishPartners,
+    /<h3>Kilometres apart on the map\. Brought together by people\.<\/h3>/,
+  );
+  assert.doesNotMatch(englishPartners, /Seven towns\. Eight organisations around one table\./);
+});
+
 test("earlier work is collected once below the projects heading without calling it an archive", () => {
   const polishProjects = section(html, "projekty", "o-nas");
   const englishProjects = section(englishHtml, "projekty", "o-nas");
