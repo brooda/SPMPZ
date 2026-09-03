@@ -234,3 +234,16 @@ test("the Zamość variant uses the logo-led fortress palette and motif", () => 
   assert.match(css, /\[data-variant=["']c["']\] \.hero__inner::after[\s\S]*clip-path:\s*polygon\(/i);
   assert.match(html, /id="variant-c"[^>]+data-variant-choice="c"[^>]*>[\s\S]*?<span>Zamość<\/span>/);
 });
+
+test("the Twin Green story keeps its green background in every visual variant", () => {
+  const css = readFileSync(cssPath, "utf8");
+
+  assert.match(
+    css,
+    /--twin-green-background:\s*linear-gradient\([^;]*#0e5c40[^;]*#176b4d[^;]*#2b8262[^;]*\)/i,
+  );
+  assert.match(
+    css,
+    /\.lead-story__visual\s*\{[^}]*background:\s*var\(--twin-green-background\)/i,
+  );
+});

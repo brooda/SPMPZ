@@ -52,6 +52,7 @@
   --page-gutter: clamp(16px, 4vw, 48px);
   --section-space: clamp(64px, 9vw, 112px);
   --focus-ring: #b3261e;
+  --twin-green-background: linear-gradient(135deg, #0e5c40 0%, #176b4d 52%, #2b8262 100%);
 }
 
 /* Option A — Genesio Green */
@@ -758,7 +759,7 @@ h3 {
   overflow: hidden;
   min-height: 520px;
   place-items: center;
-  background: var(--md-gradient-primary);
+  background: var(--twin-green-background);
   color: var(--md-sys-color-on-primary);
 }
 
