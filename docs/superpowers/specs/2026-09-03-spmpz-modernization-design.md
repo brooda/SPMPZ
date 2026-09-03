@@ -4,11 +4,11 @@ Data: 2026-09-03
 
 ## Cel
 
-Zastąpić przestarzałą stronę główną SPMPZ jedną nowoczesną, responsywną stroną, która przedstawia bieżące działania stowarzyszenia i pozwala porównać dwa wyraźnie różne kierunki wizualne. Strona ma pozostać prosta w hostowaniu na GitHub Pages i nie będzie zależna od Jekylla ani innego generatora.
+Zastąpić przestarzałą witrynę SPMPZ spójną, nowoczesną i responsywną stroną polsko-angielską. Strona główna ma prowadzić czytelnika przez jedną płynną opowieść, a wszystkie podstrony mają korzystać z tego samego języka wizualnego oraz dwóch wariantów Genesio. Witryna ma pozostać prosta w hostowaniu na GitHub Pages i nie będzie zależna od Jekylla ani innego generatora w czasie działania.
 
 ## Zakres
 
-### Nowa strona główna
+### Strona główna i płynny układ
 
 Powstanie pojedyncza, semantyczna strona HTML z sekcjami:
 
@@ -20,7 +20,26 @@ Powstanie pojedyncza, semantyczna strona HTML z sekcjami:
 6. misja stowarzyszenia i zaproszenie do członkostwa,
 7. kontakt, dane rejestrowe i odnośniki do dokumentów.
 
-Nawigacja będzie prowadziła do sekcji na tej samej stronie. Istniejące strony, raporty, prezentacje, zdjęcia i pliki PDF pozostaną dostępne pod obecnymi adresami. Polska strona główna nie będzie odsyłać do nieistniejących zasobów. Dotychczasowa wersja angielska pozostanie dostępna jako materiał archiwalny; jej pełna przebudowa nie wchodzi do tego zakresu.
+Nawigacja strony głównej będzie prowadziła do sekcji na tej samej stronie. Układ nie może przypominać dashboardu ani kolekcji niezależnych kart. Kolejne treści tworzą redakcyjny flow za pomocą szerokich pasów, zmiennego rytmu tekst–obraz, dużych nagłówków, linii podziału, numeracji i kontrolowanego oddechu. Zaokrąglenia pozostaną głównie na obrazach, przyciskach i elementach sterujących; zwykła treść nie będzie zamykana w osobnych pudełkach ani unoszona cieniem.
+
+### Pełna mapa podstron PL/EN
+
+Modernizacja obejmuje wszystkie publiczne strony informacyjne i ich angielskie odpowiedniki:
+
+| Obszar | Polski adres | Angielski adres |
+| --- | --- | --- |
+| Strona główna | `index.html` | `english.html` |
+| O stowarzyszeniu | `about_pl.html` | `about_en.html` |
+| Partnerzy | `partners_pl.html` | `partners_en.html` |
+| Projekty | `projects_pl.html` | `projects_en.html` |
+| Historia projektów | `projects_history_pl.html` | `projects_history_en.html` |
+| Migration and Integration | `migration_project_pl.html` | `migration_project_en.html` |
+| Weaving Webs | `weaving_pl.html` | `weaving.html` |
+| Kontakt | `contact_pl.html` | `contact_en.html` |
+
+`index_en.html`, `index_enn.html` i `en/index.html` pozostaną kompatybilnymi wejściami do angielskiej strony głównej, ale nie będą utrzymywać trzeciej kopii treści. Raporty, prezentacje, zdjęcia i pliki PDF pozostaną dostępne pod obecnymi adresami. Strony raportów zachowają charakter archiwalny, ale otrzymają czytelną drogę powrotu do bieżącej witryny.
+
+Każda podstrona otrzyma wspólny nagłówek, stopkę, nawigację, przełącznik języka i przełącznik wariantu. Przełącznik języka prowadzi do semantycznego odpowiednika bieżącej strony, a nie zawsze do strony głównej. Tłumaczenie angielskie zachowuje tę samą informację i hierarchię, ale może stosować naturalne angielskie sformułowania zamiast tłumaczenia słowo w słowo.
 
 ### Dwa warianty na jednej stronie
 
@@ -29,20 +48,20 @@ Oba warianty wykorzystają tę samą treść i semantyczną strukturę HTML. Ich
 #### Wariant A — „Genesio Green”
 
 - jasna zielona paleta oparta na rolach kolorystycznych MD3,
-- miękkie zielone kontenery i spokojny, otwarty układ,
+- spokojny, otwarty układ redakcyjny z asymetrycznymi przesunięciami,
 - dzielony hero z tekstem i fotografią Zamościa,
-- karty o dużych promieniach i subtelnej elewacji,
+- duże pola koloru, fotografie oraz sekcje oddzielone rytmem i liniami zamiast kart,
 - nacisk na relacje mieszkańców, partnerstwa i dostępność.
 
 #### Wariant B — „Genesio Blue”
 
 - jasna arktyczna paleta i główny niebieski kolor znany z Genesio,
 - szeroki niebieski hero z fotografią w tle i białą treścią,
-- bardziej uporządkowane, geometryczne karty informacyjne,
+- bardziej uporządkowana, geometryczna siatka redakcyjna i mocniejsze linie podziału,
 - znaczniki krajów oraz wyraźne wezwania do działania,
 - ten sam język komponentów i dostępności co w wariancie zielonym.
 
-Widoczny przełącznik A/B będzie dostępny w nagłówku. Wybór zostanie zapisany w `localStorage`. Parametr adresu `?variant=a` lub `?variant=b` pozwoli otworzyć i udostępnić konkretną wersję. Bez JavaScript strona pokaże wariant A i zachowa dostęp do całej treści.
+Widoczny przełącznik A/B będzie dostępny w nagłówku każdej strony. Wybór zostanie zapisany w `localStorage`. Parametr adresu `?variant=a` lub `?variant=b` pozwoli otworzyć i udostępnić konkretną wersję, a nawigacja wewnętrzna i przełącznik języka zachowają aktywny wariant. Bez JavaScript każda strona pokaże wariant A i zachowa dostęp do całej treści.
 
 ## Treści i źródła
 
@@ -58,15 +77,15 @@ Przegląd dobrych stron podobnych stowarzyszeń posłuży do wyboru wzorców, ni
 
 ## Implementacja
 
-Nowa część strony będzie oparta na:
+Cała witryna będzie oparta na:
 
 - semantycznym HTML5,
-- jednym głównym arkuszu CSS z tokenami i regułami obu wariantów,
+- jednym głównym arkuszu CSS z tokenami, układami redakcyjnymi i regułami obu wariantów,
 - niewielkim, niezależnym skrypcie JavaScript obsługującym menu mobilne, przełącznik wariantu i zapamiętanie wyboru,
 - lokalnych obrazach zoptymalizowanych do zastosowań internetowych,
 - zerowej liczbie wymaganych zależności uruchomieniowych.
 
-Treść pozostanie czytelna w HTML, co zapewni indeksowanie, dostępność i działanie bez JavaScript. Granice komponentów będą oznaczone klasami i elementami semantycznymi tak, aby później można było zasilać sekcję aktualności z CMS bez przebudowy projektu wizualnego.
+Treść pozostanie czytelna w HTML, co zapewni indeksowanie, dostępność i działanie bez JavaScript. Wspólne wzorce podstron obejmą: hero podstrony, redakcyjne kolumny treści, cytat lub wyróżnioną liczbę, listę wierszową, oś czasu, galerię oraz pas wezwania do działania. Granice komponentów będą oznaczone klasami i elementami semantycznymi tak, aby później można było zasilać każdą stronę i sekcję z CMS bez przebudowy projektu wizualnego.
 
 Stare pliki Jekylla nie będą wykorzystywane przez nową stronę. Ich usunięcie nie jest konieczne dla działania projektu i nie nastąpi w tej zmianie, chyba że test odnośników wykaże, że można je bezpiecznie usunąć bez utraty archiwalnej zawartości.
 
@@ -85,17 +104,17 @@ Stare pliki Jekylla nie będą wykorzystywane przez nową stronę. Ich usunięci
 
 Przed zakończeniem zostaną sprawdzone:
 
-1. oba warianty na szerokościach telefonu i komputera,
+1. oba warianty na szerokościach telefonu i komputera dla każdej strony,
 2. działanie przełącznika, parametrów URL i zapamiętywania wyboru,
 3. mobilna nawigacja i obsługa klawiaturą,
-4. wszystkie lokalne oraz zewnętrzne odnośniki,
+4. wszystkie lokalne oraz zewnętrzne odnośniki i pary językowe,
 5. brak błędów JavaScript i brak mieszanej zawartości HTTP,
 6. czytelność oraz kadrowanie obrazów,
 7. podstawowa walidacja HTML i kontrola dostępności.
 
 ## Prezentacja w GPT Sites
 
-Po ukończeniu i lokalnej weryfikacji strona zostanie także przygotowana i opublikowana jako podgląd w GPT Sites. Podgląd ma prezentować te same dwa warianty i tę samą zweryfikowaną treść. Repozytorium GitHub pozostaje źródłem kodu strony; GPT Sites pełni rolę wygodnej demonstracji i miejsca do porównania wariantów.
+Po ukończeniu i lokalnej weryfikacji pełna witryna zostanie także zaktualizowana w GPT Sites. Podgląd ma prezentować oba języki, wszystkie podstrony, te same dwa warianty i tę samą zweryfikowaną treść. Repozytorium GitHub pozostaje źródłem kodu strony; GPT Sites pełni rolę wygodnej demonstracji i miejsca do porównania wariantów.
 
 ## Analiza publikowania przez członków
 
@@ -111,6 +130,5 @@ Porównanie obejmie łatwość obsługi przez nietechniczne osoby, role i zatwie
 
 - uruchomienie kont użytkowników i panelu redakcyjnego dla wszystkich podstron,
 - automatyczne importowanie wpisów z Facebooka,
-- pełne tłumaczenie oraz przebudowa wszystkich stron angielskich,
 - zmiana domeny i konfiguracji DNS,
 - publikacja treści lub zdjęć, do których nie ma potwierdzonego prawa użycia.
