@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="css/modern.css">
     <script type="module" src="js/modern-site.mjs"></script>
   </head>
-  <body>
+  <body data-page="home">
     <div class="page-top" id="top" aria-hidden="true"></div>
     <a class="skip-link" href="#main-content">Przejdź do treści</a>
 
@@ -174,56 +174,56 @@
               <p class="eyebrow">Głosy i relacje</p>
               <h3 id="coverage-title">Zobacz wydarzenie z kilku perspektyw</h3>
             </div>
-            <div class="coverage__grid">
+            <div class="coverage-list">
               <a
-                class="source-card"
+                class="coverage-link"
                 href="https://www.facebook.com/share/p/198Uct8a7r/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span class="source-card__type">Facebook · Rafał Zwolak</span>
+                <span class="coverage-link__type">Facebook · Rafał Zwolak</span>
                 <strong>Spotkanie o przyszłej współpracy Zamościa</strong>
-                <span class="source-card__action">Otwórz wpis <span aria-hidden="true">↗</span></span>
+                <span class="coverage-link__action">Otwórz wpis <span aria-hidden="true">↗</span></span>
               </a>
               <a
-                class="source-card"
+                class="coverage-link"
                 href="https://www.facebook.com/share/p/18qQkk54jS/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span class="source-card__type">Facebook · Marta Pfeifer</span>
+                <span class="coverage-link__type">Facebook · Marta Pfeifer</span>
                 <strong>Relacja ze spotkania miast partnerskich</strong>
-                <span class="source-card__action">Otwórz wpis <span aria-hidden="true">↗</span></span>
+                <span class="coverage-link__action">Otwórz wpis <span aria-hidden="true">↗</span></span>
               </a>
               <a
-                class="source-card"
+                class="coverage-link"
                 href="https://www.zamojska.pl/artykul/6268%2Czamosc-gospodarzem-miedzynarodowego-spotkania-o-transformacji-energetycznej"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span class="source-card__type">Zamojska.pl · prasa</span>
+                <span class="coverage-link__type">Zamojska.pl · prasa</span>
                 <strong>Zamość gospodarzem rozmów o transformacji energetycznej</strong>
-                <span class="source-card__action">Czytaj artykuł <span aria-hidden="true">↗</span></span>
+                <span class="coverage-link__action">Czytaj artykuł <span aria-hidden="true">↗</span></span>
               </a>
               <a
-                class="source-card"
+                class="coverage-link"
                 href="https://www.kronikatygodnia.pl/artykul/55329%2Czamosc-gospodarzem-europejskiego-projektu-ekologicznego-twin-green"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span class="source-card__type">Kronika Tygodnia · prasa</span>
+                <span class="coverage-link__type">Kronika Tygodnia · prasa</span>
                 <strong>Twin Green: europejski projekt ekologiczny w Zamościu</strong>
-                <span class="source-card__action">Czytaj artykuł <span aria-hidden="true">↗</span></span>
+                <span class="coverage-link__action">Czytaj artykuł <span aria-hidden="true">↗</span></span>
               </a>
             </div>
           </div>
 
-          <div class="archive-news" aria-label="Pozostałe aktualności i raporty">
+          <div class="archive-stream" aria-label="Pozostałe aktualności i raporty">
             <article>
               <p class="eyebrow">Raport · 2022</p>
               <h3>ImagE50 — sprawozdanie z projektu</h3>
               <p>Dokumentacja zakończonego międzynarodowego przedsięwzięcia.</p>
-              <a href="https://raw.githubusercontent.com/brooda/SPMPZ/master/report_22/report.pdf">Otwórz raport PDF <span aria-hidden="true">↗</span></a>
+              <a href="report_22/report.pdf">Otwórz raport PDF <span aria-hidden="true">↗</span></a>
             </article>
             <article>
               <p class="eyebrow">Archiwum · 2018</p>
@@ -254,9 +254,9 @@
             </p>
           </header>
 
-          <div class="partner-map" aria-label="Organizacje partnerskie SPMPZ">
-            <div class="partner-map__center">
-              <span class="partner-map__pin" aria-hidden="true"></span>
+          <div class="partner-flow" aria-label="Organizacje partnerskie SPMPZ">
+            <div class="partner-flow__center">
+              <span class="partner-flow__pin" aria-hidden="true"></span>
               <strong>Zamość</strong>
               <span>Polska</span>
             </div>
@@ -292,9 +292,9 @@
             <p>Od ekologii po młodzież, kulturę i codzienne życie nowych mieszkańców Europy.</p>
           </header>
 
-          <div class="project-grid">
-            <article class="project-card project-card--featured">
-              <div class="project-card__number" aria-hidden="true">01</div>
+          <div class="project-stream">
+            <article class="project-chapter project-chapter--featured">
+              <div class="project-chapter__number" aria-hidden="true">01</div>
               <p class="eyebrow">Ekologia · 2026</p>
               <h3>Twin Green</h3>
               <p>
@@ -303,28 +303,28 @@
               </p>
               <a href="#aktualnosci">Przeczytaj relację <span aria-hidden="true">↑</span></a>
             </article>
-            <article class="project-card">
-              <div class="project-card__number" aria-hidden="true">02</div>
+            <article class="project-chapter">
+              <div class="project-chapter__number" aria-hidden="true">02</div>
               <p class="eyebrow">Młodzież</p>
               <h3>Youth for Europe</h3>
               <p>Młodzi ludzie z ośmiu miast uczą się współpracy i poznają Europę bez podręcznikowych skrótów.</p>
               <a href="projects_pl.html">Więcej o projekcie <span aria-hidden="true">→</span></a>
             </article>
-            <article class="project-card">
-              <div class="project-card__number" aria-hidden="true">03</div>
+            <article class="project-chapter">
+              <div class="project-chapter__number" aria-hidden="true">03</div>
               <p class="eyebrow">Wymiana mieszkańców</p>
               <h3>Zamość × Loughborough</h3>
               <p>Coroczne wizyty, pobyt w domach gospodarzy i przyjaźnie budowane przez lata.</p>
               <a href="projects_pl.html">Poznaj historię wymiany <span aria-hidden="true">→</span></a>
             </article>
-            <article class="project-card">
-              <div class="project-card__number" aria-hidden="true">04</div>
+            <article class="project-chapter">
+              <div class="project-chapter__number" aria-hidden="true">04</div>
               <p class="eyebrow">Integracja</p>
               <h3>Migration Project</h3>
               <p>Europejska rozmowa o migracji, obywatelstwie i doświadczeniach lokalnych społeczności.</p>
               <a href="migration_project_pl.html">Zobacz podsumowanie <span aria-hidden="true">→</span></a>
             </article>
-            <article class="project-card project-card--image">
+            <article class="project-chapter project-chapter--image">
               <img
                 src="images/site/fortress-night.jpg"
                 width="1440"
@@ -335,7 +335,7 @@
               <div>
                 <p class="eyebrow">Kultura i solidarność</p>
                 <h3>Weaving a Europe of Solidarity</h3>
-                <a href="weaving.html" lang="en">Explore the project <span aria-hidden="true">→</span></a>
+                <a href="weaving_pl.html">Poznaj projekt <span aria-hidden="true">→</span></a>
               </div>
             </article>
           </div>
@@ -343,7 +343,7 @@
       </section>
 
       <section class="about section" id="o-nas" aria-labelledby="about-title">
-        <div class="about__inner shell">
+        <div class="about-flow shell">
           <div class="about__statement">
             <p class="eyebrow">Po co jesteśmy</p>
             <h2 id="about-title">Partnerstwo miast ma sens wtedy, gdy spotykają się ludzie.</h2>
@@ -407,7 +407,7 @@
 
           <nav class="document-links" aria-label="Dokumenty stowarzyszenia">
             <a href="statute_pl.pdf">Statut <span>PDF ↗</span></a>
-            <a href="https://raw.githubusercontent.com/brooda/SPMPZ/master/report_22/report.pdf">Raport ImagE50 <span>PDF ↗</span></a>
+            <a href="report_22/report.pdf">Raport ImagE50 <span>PDF ↗</span></a>
             <a href="Final report/index.html">Raport Migration Project <span>HTML →</span></a>
           </nav>
         </div>
@@ -423,11 +423,11 @@
             <span>Stowarzyszenie Przyjaciół Miast Partnerskich Zamościa</span>
           </span>
         </div>
-        <nav aria-label="Archiwalne strony">
-          <a href="about_pl.html">O nas — archiwum</a>
-          <a href="projects_pl.html">Projekty — archiwum</a>
-          <a href="partners_pl.html">Partnerzy — archiwum</a>
-          <a href="english.html" lang="en">English archive</a>
+        <nav aria-label="Podstrony">
+          <a href="about_pl.html">O nas</a>
+          <a href="projects_pl.html">Projekty</a>
+          <a href="partners_pl.html">Partnerzy</a>
+          <a href="english.html" lang="en">English</a>
         </nav>
         <div class="site-footer__meta">
           <p>© 2026 SPMPZ</p>

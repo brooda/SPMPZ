@@ -94,3 +94,11 @@ test("content layout avoids card-based presentation", () => {
   for (const page of canonicalPages)
     assert.doesNotMatch(read(page), /class="[^"]*(?:source-card|project-card|archive-news)[^"]*"/);
 });
+
+test("GPT Sites contains the same canonical pages and shared presentation", () => {
+  for (const path of [...canonicalPages, "index_en.html", "index_enn.html", "css/modern.css", "js/modern-site.mjs"])
+    assert.equal(read(`sites-preview/public/spmpz/${path}`), read(path), `Sites copy differs: ${path}`);
+
+  for (const path of ["en/index.html", "images/site/hero-zamosc.jpg", "images/site/fortress-night.jpg", "images/weaving.jpg", "report_22/report.pdf", "migration.pdf", "statute_pl.pdf"])
+    assert.ok(existsSync(resolve(root, "sites-preview/public/spmpz", path)), `Sites copy missing: ${path}`);
+});
