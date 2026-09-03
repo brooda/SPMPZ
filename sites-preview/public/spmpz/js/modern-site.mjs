@@ -42,6 +42,14 @@ export function initializeSite(doc, win) {
     stored = null;
   }
 
+  const storeVariant = (variant) => {
+    try {
+      win.localStorage.setItem(STORAGE_KEY, variant);
+    } catch {
+      // Links still carry the visual choice when storage is blocked.
+    }
+  };
+
   const applyVariant = (variant, persist = false) => {
     const selected = VALID_VARIANTS.has(variant) ? variant : "a";
     root.dataset.variant = selected;
@@ -67,11 +75,7 @@ export function initializeSite(doc, win) {
 
     if (!persist) return;
 
-    try {
-      win.localStorage.setItem(STORAGE_KEY, selected);
-    } catch {
-      // The visual choice still works when storage is blocked.
-    }
+    storeVariant(selected);
 
     try {
       win.history.replaceState(null, "", withVariant(win.location.href, selected));
@@ -80,7 +84,9 @@ export function initializeSite(doc, win) {
     }
   };
 
-  applyVariant(resolveVariant(win.location.search, stored));
+  const initialVariant = resolveVariant(win.location.search, stored);
+  applyVariant(initialVariant);
+  storeVariant(initialVariant);
 
   for (const button of buttons) {
     button.addEventListener("click", () => {

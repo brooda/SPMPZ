@@ -83,6 +83,8 @@ function buildPage({ search = "", stored = null } = {}) {
   const nav = new FakeElement();
   nav.querySelectorAll = () => [menuLink];
   const theme = new FakeElement();
+  const projectLink = new FakeElement();
+  projectLink.setAttribute("href", "projects_pl.html#list");
   const documentListeners = new Map();
 
   const doc = {
@@ -98,7 +100,9 @@ function buildPage({ search = "", stored = null } = {}) {
       return selector === 'meta[name="theme-color"]' ? theme : null;
     },
     querySelectorAll(selector) {
-      return selector === "[data-variant-choice]" ? [buttonA, buttonB, buttonC] : [];
+      if (selector === "[data-variant-choice]") return [buttonA, buttonB, buttonC];
+      if (selector === 'a[href]') return [projectLink];
+      return [];
     },
     addEventListener(name, handler) {
       documentListeners.set(name, handler);
@@ -134,12 +138,25 @@ function buildPage({ search = "", stored = null } = {}) {
     history,
     menuLink,
     navToggle,
+    projectLink,
     root,
     theme,
     win,
     writes,
   };
 }
+
+test("a theme selected from the URL survives opening a later page", () => {
+  const firstPage = buildPage({ search: "?variant=c", stored: "a" });
+  initializeSite(firstPage.doc, firstPage.win);
+
+  const persisted = firstPage.writes.at(-1)?.[1];
+  const nextPage = buildPage({ stored: persisted });
+  initializeSite(nextPage.doc, nextPage.win);
+
+  assert.equal(firstPage.projectLink.getAttribute("href"), "https://example.org/projects_pl.html?variant=c#list");
+  assert.equal(nextPage.root.dataset.variant, "c");
+});
 
 test("initializer applies query choice and keeps controls synchronized", () => {
   const page = buildPage({ search: "?variant=b", stored: "a" });
@@ -160,7 +177,7 @@ test("explicit variant selection is stored and reflected in the URL", () => {
   page.buttonC.dispatch("click");
 
   assert.equal(page.root.dataset.variant, "c");
-  assert.deepEqual(page.writes, [["spmpz-variant", "c"]]);
+  assert.deepEqual(page.writes.at(-1), ["spmpz-variant", "c"]);
   assert.equal(page.history.at(-1), "https://example.org/?variant=c#aktualnosci");
   assert.equal(page.theme.getAttribute("content"), "#f6e7cf");
 });

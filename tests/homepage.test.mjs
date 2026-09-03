@@ -132,6 +132,28 @@ test("earlier work is collected once below the projects heading without calling 
   }
 });
 
+test("past projects use compact text-only rows", () => {
+  const css = readFileSync(cssPath, "utf8");
+
+  for (const [document, label] of [
+    [html, "Polish"],
+    [englishHtml, "English"],
+  ]) {
+    const projects = section(document, "projekty", "o-nas");
+    assert.doesNotMatch(projects, /project-chapter--image|<img\b/i, `${label} projects still use background photography`);
+    assert.equal(
+      [...projects.matchAll(/<article class="project-chapter">/g)].length,
+      6,
+      `${label} projects are not a uniform text list`,
+    );
+  }
+
+  assert.match(
+    css,
+    /\.project-stream\[data-past-projects\] \.project-chapter\s*\{[^}]*padding-block:\s*clamp\(14px,\s*1\.6vw,\s*22px\)[^}]*grid-template-columns:\s*3\.25rem\s+minmax\(11rem,\s*0\.7fr\)\s+minmax\(0,\s*1\.3fr\)\s+auto/s,
+  );
+});
+
 test("homepage uses secure external resources", () => {
   assert.doesNotMatch(html, /(?:src|href)=["']http:\/\//i);
 });
