@@ -79,6 +79,35 @@ test("page families retain the association's essential information", () => {
     assert.match(projectContent, new RegExp(project, "i"), `Missing project content ${project}`);
 });
 
+test("project reports have one contextual home in each language", () => {
+  const polishPages = pairs.map(([polish]) => read(polish)).join("\n");
+  const englishPages = pairs.map(([, english]) => read(english)).join("\n");
+
+  for (const [pages, language] of [
+    [polishPages, "Polish"],
+    [englishPages, "English"],
+  ]) {
+    assert.equal(
+      pages.split('href="report_22/report.pdf"').length - 1,
+      1,
+      `${language} pages duplicate the ImagE50 report`,
+    );
+    assert.equal(
+      pages.split('href="Final report/index.html"').length - 1,
+      1,
+      `${language} pages duplicate the Migration Project report`,
+    );
+  }
+
+  for (const page of ["contact_pl.html", "contact_en.html"]) {
+    assert.doesNotMatch(
+      read(page),
+      /report_22\/report\.pdf|Final report\/index\.html/,
+      `${page} should contain contact and association documents, not project reports`,
+    );
+  }
+});
+
 test("the complete partner network is presented on a real interactive map", () => {
   const mapPages = ["index.html", "english.html", "partners_pl.html", "partners_en.html"];
   const cities = ["Zamość", "Bagnols-sur-Cèze", "Braunfels", "Carcaixent", "Eeklo", "Feltre", "Kiskunfélegyháza", "Newbury", "Loughborough"];

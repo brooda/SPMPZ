@@ -9,6 +9,14 @@ const html = readFileSync(resolve(root, "index.html"), "utf8");
 const englishHtml = readFileSync(resolve(root, "english.html"), "utf8");
 const cssPath = resolve(root, "css/modern.css");
 
+const section = (document, id, nextId) => {
+  const match = document.match(
+    new RegExp(`<section[^>]+id=["']${id}["'][\\s\\S]*?(?=<section[^>]+id=["']${nextId}["'])`),
+  );
+  assert.ok(match, `Missing section #${id}`);
+  return match[0];
+};
+
 test("homepage exposes the agreed sections and current lead story", () => {
   for (const id of [
     "aktualnosci",
@@ -44,6 +52,52 @@ test("homepage exposes the agreed sections and current lead story", () => {
     "https://www.kronikatygodnia.pl/artykul/55329%2Czamosc-gospodarzem-europejskiego-projektu-ekologicznego-twin-green",
   ]) {
     assert.ok(html.includes(source), `Missing source: ${source}`);
+  }
+});
+
+test("news presents only the current Twin Green story", () => {
+  for (const [document, label] of [
+    [html, "Polish"],
+    [englishHtml, "English"],
+  ]) {
+    const news = section(document, "aktualnosci", "partnerzy");
+    assert.match(news, /Twin Green/i, `${label} news is missing Twin Green`);
+    assert.doesNotMatch(
+      news,
+      /archive-stream|report_22\/report\.pdf|migration_project_|projects_history_/i,
+      `${label} news mixes current and earlier work`,
+    );
+  }
+});
+
+test("earlier work is collected once below the projects heading without calling it an archive", () => {
+  const polishProjects = section(html, "projekty", "o-nas");
+  const englishProjects = section(englishHtml, "projekty", "o-nas");
+
+  assert.match(polishProjects, /data-past-projects/);
+  assert.match(polishProjects, /Z wcześniejszych lat/i);
+  assert.doesNotMatch(polishProjects, /archiw/i);
+
+  assert.match(englishProjects, /data-past-projects/);
+  assert.match(englishProjects, /From earlier years/i);
+  assert.doesNotMatch(englishProjects, /archive/i);
+
+  for (const target of [
+    "report_22/report.pdf",
+    "migration_project_pl.html",
+    "projects_history_pl.html",
+    "weaving_pl.html",
+  ]) {
+    assert.ok(polishProjects.includes(target), `Polish earlier work is missing ${target}`);
+  }
+
+  for (const target of [
+    "report_22/report.pdf",
+    "migration_project_en.html",
+    "projects_history_en.html",
+    "weaving.html",
+  ]) {
+    assert.ok(englishProjects.includes(target), `English earlier work is missing ${target}`);
   }
 });
 
