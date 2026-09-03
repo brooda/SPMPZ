@@ -70,6 +70,23 @@ test("news presents only the current Twin Green story", () => {
   }
 });
 
+test("coverage uses concise bilingual headings and announces upcoming photos", () => {
+  const polishNews = section(html, "aktualnosci", "partnerzy");
+  const englishNews = section(englishHtml, "aktualnosci", "partnerzy");
+
+  assert.match(
+    polishNews,
+    /<div class="coverage__intro">\s*<h3 id="coverage-title">Relacje<\/h3>\s*<p class="eyebrow">Zdjęcia — wkrótce<\/p>/,
+  );
+  assert.doesNotMatch(polishNews, /Zobacz wydarzenie z kilku perspektyw/);
+
+  assert.match(
+    englishNews,
+    /<div class="coverage__intro">\s*<h3>Coverage<\/h3>\s*<p class="eyebrow">Photos — coming soon<\/p>/,
+  );
+  assert.doesNotMatch(englishNews, /See the event from several perspectives/);
+});
+
 test("earlier work is collected once below the projects heading without calling it an archive", () => {
   const polishProjects = section(html, "projekty", "o-nas");
   const englishProjects = section(englishHtml, "projekty", "o-nas");
