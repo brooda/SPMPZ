@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const html = readFileSync(resolve(root, "index.html"), "utf8");
+const englishHtml = readFileSync(resolve(root, "english.html"), "utf8");
 const cssPath = resolve(root, "css/modern.css");
 
 test("homepage exposes the agreed sections and current lead story", () => {
@@ -64,6 +65,21 @@ test("homepage local links and images point to existing files", () => {
 test("the top anchor is independent from the sticky header", () => {
   assert.match(html, /<div class="page-top" id="top"/);
   assert.doesNotMatch(html, /<header[^>]+id="top"/);
+});
+
+test("only the Polish homepage uses the compact hero title", () => {
+  assert.match(html, /<h1[^>]+class="hero-title--compact"[^>]*>Zamość bliżej Europy\./);
+  assert.doesNotMatch(englishHtml, /hero-title--compact/);
+
+  const css = readFileSync(cssPath, "utf8");
+  assert.match(
+    css,
+    /\.hero__copy h1\.hero-title--compact\s*\{[^}]*font-size:\s*clamp\(2\.3rem,\s*4\.2vw,\s*4rem\)/s,
+  );
+  assert.match(
+    css,
+    /@media\s*\(max-width:\s*680px\)[\s\S]*?\.hero__copy h1\.hero-title--compact\s*\{[^}]*font-size:\s*clamp\(2\.1rem,\s*10vw,\s*3\.25rem\)/,
+  );
 });
 
 test("stylesheet defines both designs and accessibility adaptations", () => {

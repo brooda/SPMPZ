@@ -517,6 +517,10 @@ h3 {
   margin-bottom: var(--md-sys-spacing-6);
 }
 
+.hero__copy h1.hero-title--compact {
+  font-size: clamp(2.3rem, 4.2vw, 4rem);
+}
+
 .hero__lead {
   max-width: 37rem;
   margin-bottom: var(--md-sys-spacing-8);
@@ -2461,6 +2465,10 @@ h3 {
 
   .hero__copy h1 {
     font-size: clamp(2.4rem, 12vw, 3.75rem);
+  }
+
+  .hero__copy h1.hero-title--compact {
+    font-size: clamp(2.1rem, 10vw, 3.25rem);
   }
 
   .hero__actions {
