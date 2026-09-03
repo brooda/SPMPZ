@@ -91,6 +91,11 @@ test("partner map story leads with people rather than organisation counts", () =
   const polishPartners = section(html, "partnerzy", "projekty");
   const englishPartners = section(englishHtml, "partnerzy", "projekty");
 
+  assert.match(
+    polishPartners,
+    /<h2 id="partners-title">Więcej niż tylko miasta na mapie<\/h2>/,
+  );
+  assert.doesNotMatch(polishPartners, /<h2 id="partners-title">Miasta nie tylko na mapie<\/h2>/);
   assert.match(polishPartners, /<h3>Na mapie dzielą je kilometry\. Łączą je ludzie\.<\/h3>/);
   assert.doesNotMatch(polishPartners, /Siedem miast\. Osiem organizacji przy wspólnym stole\./);
 
