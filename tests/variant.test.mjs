@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   initializeSite,
+  isLocalHtmlLink,
   resolveVariant,
   withVariant,
 } from "../js/modern-site.mjs";
@@ -21,6 +22,21 @@ test("share URL preserves unrelated query values and the hash", () => {
   assert.equal(
     withVariant("https://example.org/?ref=mail#projekty", "b"),
     "https://example.org/?ref=mail&variant=b#projekty",
+  );
+});
+
+test("only navigable local HTML pages inherit the visual variant", () => {
+  for (const href of ["about_pl.html", "projects_en.html#archive", "./english.html", "en/index.html?ref=old"])
+    assert.equal(isLocalHtmlLink(href), true, href);
+
+  for (const href of ["#projekty", "statute_pl.pdf", "mailto:kontakt@spmpz.zamosc.pl", "https://example.org/page.html", "//example.org/page.html"])
+    assert.equal(isLocalHtmlLink(href), false, href);
+});
+
+test("variant URL helper keeps page path and fragment", () => {
+  assert.equal(
+    withVariant("https://spmpz.test/about_en.html#mission", "b"),
+    "https://spmpz.test/about_en.html?variant=b#mission",
   );
 });
 

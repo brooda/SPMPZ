@@ -17,6 +17,13 @@ export function withVariant(url, variant) {
   return next.toString();
 }
 
+export function isLocalHtmlLink(href) {
+  if (typeof href !== "string") return false;
+  const value = href.trim();
+  if (!value || /^(?:[a-z][a-z\d+.-]*:|\/\/|#|\?)/i.test(value)) return false;
+  return value.split(/[?#]/, 1)[0].toLowerCase().endsWith(".html");
+}
+
 export function initializeSite(doc, win) {
   const root = doc.documentElement;
   const buttons = [...doc.querySelectorAll("[data-variant-choice]")];
@@ -46,6 +53,16 @@ export function initializeSite(doc, win) {
     }
 
     theme?.setAttribute("content", THEME_COLORS[selected]);
+
+    for (const link of doc.querySelectorAll('a[href]')) {
+      const href = link.getAttribute("href");
+      if (!isLocalHtmlLink(href)) continue;
+      try {
+        link.setAttribute("href", withVariant(new URL(href, win.location.href).toString(), selected));
+      } catch {
+        // Keep the original target if a preview environment exposes an invalid base URL.
+      }
+    }
 
     if (!persist) return;
 
