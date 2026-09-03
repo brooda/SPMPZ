@@ -1,6 +1,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { partnerCities } from "../js/partner-map-data.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -21,7 +22,7 @@ const copy = {
     language: "EN",
     pages: "Podstrony",
     top: "Na górę",
-    photos: "Zdjęcia: archiwum SPMPZ, Jacek Bełz",
+    photos: "Zdjęcia",
   },
   en: {
     skip: "Skip to content",
@@ -39,7 +40,7 @@ const copy = {
     language: "PL",
     pages: "Pages",
     top: "Back to top",
-    photos: "Photos: SPMPZ archive, Jacek Bełz",
+    photos: "Photos",
   },
 };
 
@@ -98,7 +99,11 @@ function footer(lang) {
     </footer>`;
 }
 
-function documentPage({ lang, page, counterpart, title, description, main, home = false }) {
+function documentPage({ lang, page, counterpart, title, description, main, home = false, map = false }) {
+  const mapAssets = map ? `
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script type="module" src="js/partner-map.mjs"></script>` : "";
   return `<!doctype html>
 <html lang="${lang}" data-variant="a">
   <head>
@@ -108,7 +113,7 @@ function documentPage({ lang, page, counterpart, title, description, main, home 
     <meta name="description" content="${description}">
     <title>${title}</title>
     <link rel="stylesheet" href="css/modern.css">
-    <script type="module" src="js/modern-site.mjs"></script>
+    <script type="module" src="js/modern-site.mjs"></script>${mapAssets}
   </head>
   <body data-page="${page}">${header(lang, counterpart, home)}
     <main id="main-content">${main}</main>${footer(lang)}
@@ -142,33 +147,28 @@ const aboutEn = documentPage({
     <section class="page-section values-section"><div class="shell"><p class="eyebrow">Our values</p><ol class="value-list"><li><span>01</span><strong>Direct contact</strong><small>Relationships between residents, not only protocols.</small></li><li><span>02</span><strong>Curiosity</strong><small>Languages, cultures and everyday life.</small></li><li><span>03</span><strong>Reciprocity</strong><small>Everyone can be a guest and a host.</small></li></ol></div></section>${cta("en", "Would you like to join?", "Take part in an exchange, host visitors or help us organise an event.")}`,
 });
 
-const partnerRows = [
-  ["FR", "Bagnols-sur-Cèze", "Francja", "France", "https://www.jumelages-bagnols.fr/"],
-  ["DE", "Braunfels", "Niemcy", "Germany", "https://www.partnerschaftsring-braunfels.de/"],
-  ["ES", "Carcaixent", "Hiszpania", "Spain", "https://www.facebook.com/Associaci%C3%B3-Municipal-dAgermanament-de-Carcaixent-115559442115602"],
-  ["BE", "Eeklo", "Belgia", "Belgium", "https://www.facebook.com/CISEeklo/"],
-  ["IT", "Feltre", "Włochy", "Italy", ""],
-  ["HU", "Kiskunfélegyháza", "Węgry", "Hungary", "https://www.facebook.com/tekiskunfelegyhaza/"],
-  ["GB", "Newbury", "Wielka Brytania", "United Kingdom", "https://www.newburytwintown.co.uk/"],
-  ["GB", "Loughborough", "Wielka Brytania", "United Kingdom", ""],
-];
+function partnerMap(lang) {
+  const pl = lang === "pl";
+  const cities = partnerCities.map((city, index) => {
+    const label = city.relationship === "host" ? "Z" : String(index).padStart(2, "0");
+    return `<li><button type="button" data-map-city="${city.id}"><span class="partner-map__number">${label}</span><span><strong>${city.name}</strong><small>${city.country[lang]}</small></span><span class="country-code">${city.code}</span></button></li>`;
+  }).join("");
 
-function partnerList(lang) {
-  return `<ol class="directory-list">${partnerRows.map(([code, city, pl, en, url], index) => `<li><span class="directory-list__index">${String(index + 1).padStart(2, "0")}</span><span class="country-code">${code}</span><strong>${city}</strong><small>${lang === "pl" ? pl : en}</small>${url ? `<a href="${url}" target="_blank" rel="noopener noreferrer">${lang === "pl" ? "Odwiedź stronę" : "Visit website"} <span aria-hidden="true">↗</span></a>` : ""}</li>`).join("")}</ol>`;
+  return `<div class="partner-map-region" data-partner-map-region><div class="partner-map-stage"><div class="partner-map" data-partner-map data-language="${lang}" role="region" aria-label="${pl ? "Mapa Zamościa i ośmiu miast partnerskich" : "Map of Zamość and its eight partner towns"}"><p class="partner-map__fallback">${pl ? "Interaktywna mapa Europy" : "Interactive map of Europe"}</p></div><aside class="partner-map__story"><p class="eyebrow">7 Cities</p><h3>${pl ? "Siedem miast. Osiem organizacji przy wspólnym stole." : "Seven towns. Eight organisations around one table."}</h3><p>${pl ? "Sieć 7 Cities łączy organizacje z Bagnols-sur-Cèze, Braunfels, Carcaixent, Eeklo, Feltre, Kiskunfélegyházy i Newbury. Zamość wnosi do niej ósmy głos, a Loughborough pozostaje bliskim partnerem osobnej wymiany mieszkańców." : "The 7 Cities network connects organisations in Bagnols-sur-Cèze, Braunfels, Carcaixent, Eeklo, Feltre, Kiskunfélegyháza and Newbury. Zamość adds an eighth voice, while Loughborough remains a close partner in a separate resident exchange."}</p></aside></div><ol class="partner-map__directory" aria-label="${pl ? "Wybierz miasto na mapie" : "Choose a town on the map"}">${cities}</ol><p class="partner-map__hint">${pl ? "Wybierz miasto, aby zobaczyć informacje i stronę organizacji partnerskiej." : "Choose a town to see details and the partner organisation’s website."}</p></div>`;
 }
 
 const partnersPl = documentPage({
-  lang: "pl", page: "partners", counterpart: "partners_en.html", title: "Partnerzy — SPMPZ", description: "Europejska sieć partnerska SPMPZ.",
+  lang: "pl", page: "partners", counterpart: "partners_en.html", title: "Partnerzy — SPMPZ", description: "Europejska sieć partnerska SPMPZ.", map: true,
   main: `${pageHero("Sieć przyjaźni", "Osiem miast, wiele osobistych historii", "Grupa organizacji partnerskich spotyka się podczas wymian rodzin, młodzieży i projektów tematycznych.", "02")}
     <section class="page-section"><div class="shell editorial-copy editorial-copy--intro"><div class="pull-quote"><p>„7 Cities” ma dziś ośmiu uczestników — bo Zamość dołączył do stołu.</p></div><div class="prose"><h2>Partnerstwo w praktyce</h2><p>Niektóre miasta łączą oficjalne umowy podpisane przez samorządy, inne opierają współpracę na dobrowolnym zaangażowaniu mieszkańców. Co roku odbywają się spotkania rodzin, młodzieży i grup projektowych, za każdym razem w innym miejscu.</p><p>Osobnym, szczególnie bliskim partnerem pozostaje Loughborough. Wzajemne wizyty i zakwaterowanie w domach członków nadają tej współpracy osobisty charakter.</p></div></div></section>
-    <section class="directory-section"><div class="shell"><div class="section-heading"><div><p class="eyebrow">Europa mieszkańców</p><h2>Nasza sieć</h2></div><p>Miasta są punktem wyjścia. Najważniejsi są ludzie, którzy chcą się spotkać.</p></div>${partnerList("pl")}</div></section>${cta("pl", "Masz pomysł na wspólne działanie?", "Napisz, jeśli reprezentujesz szkołę, organizację albo nieformalną grupę mieszkańców.")}`,
+    <section class="directory-section partner-map-section"><div class="shell"><div class="section-heading"><div><p class="eyebrow">Europa mieszkańców</p><h2>Nasza sieć na mapie</h2></div><p>Miasta są punktem wyjścia. Najważniejsi są ludzie, którzy chcą się spotkać.</p></div>${partnerMap("pl")}</div></section>${cta("pl", "Masz pomysł na wspólne działanie?", "Napisz, jeśli reprezentujesz szkołę, organizację albo nieformalną grupę mieszkańców.")}`,
 });
 
 const partnersEn = documentPage({
-  lang: "en", page: "partners", counterpart: "partners_pl.html", title: "Partners — SPMPZ", description: "The European partner network of SPMPZ.",
+  lang: "en", page: "partners", counterpart: "partners_pl.html", title: "Partners — SPMPZ", description: "The European partner network of SPMPZ.", map: true,
   main: `${pageHero("A network of friendship", "Eight towns, many personal stories", "Our partner organisations meet through family exchanges, youth programmes and thematic projects.", "02")}
     <section class="page-section"><div class="shell editorial-copy editorial-copy--intro"><div class="pull-quote"><p>“7 Cities” now has eight participants — because Zamość joined the table.</p></div><div class="prose"><h2>Partnership in practice</h2><p>Some towns are connected by formal municipal agreements; others build cooperation through the voluntary commitment of residents. Family meetings, youth exchanges and project groups take place each year in a different town.</p><p>Loughborough remains a particularly close partner. Reciprocal visits and staying in members’ homes give this relationship its personal character.</p></div></div></section>
-    <section class="directory-section"><div class="shell"><div class="section-heading"><div><p class="eyebrow">A Europe of residents</p><h2>Our network</h2></div><p>Towns are the starting point. The people willing to meet are what matters.</p></div>${partnerList("en")}</div></section>${cta("en", "Do you have an idea for working together?", "Write to us if you represent a school, an organisation or an informal community group.")}`,
+    <section class="directory-section partner-map-section"><div class="shell"><div class="section-heading"><div><p class="eyebrow">A Europe of residents</p><h2>Our network on the map</h2></div><p>Towns are the starting point. The people willing to meet are what matters.</p></div>${partnerMap("en")}</div></section>${cta("en", "Do you have an idea for working together?", "Write to us if you represent a school, an organisation or an informal community group.")}`,
 });
 
 const projectsPl = documentPage({
@@ -223,11 +223,11 @@ const contactPl = documentPage({ lang: "pl", page: "contact", counterpart: "cont
 const contactEn = documentPage({ lang: "en", page: "contact", counterpart: "contact_pl.html", title: "Contact — SPMPZ", description: "Contact, registration details and documents for SPMPZ.", main: contactMain("en") });
 
 const englishHome = documentPage({
-  lang: "en", page: "home", counterpart: "index.html", home: true,
+  lang: "en", page: "home", counterpart: "index.html", home: true, map: true,
   title: "SPMPZ — Bringing Zamość closer to Europe", description: "Friends of Zamość Twin Towns — meetings, resident exchanges and European projects.",
   main: `<section class="hero" aria-labelledby="hero-title"><div class="hero__inner shell"><div class="hero__copy"><p class="eyebrow">Zamość · Europe · since 2003</p><h1 id="hero-title">Zamość closer to Europe.<br>Europe closer to Zamość.</h1><p class="hero__lead">We connect residents across borders through meetings, exchanges and projects that turn partner towns into real neighbours.</p><div class="hero__actions"><a class="button button--primary" href="#aktualnosci">See what we do</a><a class="button button--quiet" href="#dolacz">Join us <span aria-hidden="true">↗</span></a></div></div><figure class="hero__media image-frame"><img src="images/site/hero-zamosc.jpg" width="1920" height="1280" alt="Town Hall and Great Market Square in Zamość"><figcaption><span>Zamość</span><span>a UNESCO World Heritage city</span></figcaption></figure><dl class="hero__facts" aria-label="Association in numbers"><div><dt>2003</dt><dd>founded</dd></div><div><dt>8</dt><dd>partner organisations</dd></div><div><dt>1</dt><dd>shared Europe of residents</dd></div></dl></div></section>
     <section class="news section" id="aktualnosci" aria-labelledby="news-title"><div class="shell"><header class="section-heading"><div><p class="eyebrow">Happening now</p><h2 id="news-title">News</h2></div><p>Recent meetings, conversations and results of cooperation between residents of partner towns.</p></header><article class="lead-story"><div class="lead-story__visual" aria-hidden="true"><span class="story-number">01</span><div class="orbit orbit--one"></div><div class="orbit orbit--two"></div><p>TWIN<br>GREEN</p></div><div class="lead-story__content"><div class="story-meta"><span class="tag">Lead story</span><time datetime="2026-08-24">24 August 2026</time><span>Zamość</span></div><h3>European towns met in Zamość to discuss a greener future</h3><p class="story-intro">The Zamość meeting of <strong>Twin Green</strong> focused on circular economy, sustainable energy and ways local communities can answer ecological challenges together.</p><p>Polish hosts welcomed representatives from Germany, Italy, the United Kingdom, Belgium, Spain and Hungary. Participants shared experience and explored local approaches to energy transition and responsible use of resources.</p><p>During the centenary celebrations of the City Park, SPMPZ members and international guests also met the Mayor of Zamość, Rafał Zwolak, to discuss future cooperation. Visitors stayed in members’ homes, keeping the exchange rooted in direct relationships between residents.</p><ul class="country-list" aria-label="Countries represented"><li><span>PL</span> Poland</li><li><span>DE</span> Germany</li><li><span>IT</span> Italy</li><li><span>GB</span> United Kingdom</li><li><span>BE</span> Belgium</li><li><span>ES</span> Spain</li><li><span>HU</span> Hungary</li></ul></div></article><div class="coverage"><div class="coverage__intro"><p class="eyebrow">Coverage</p><h3>See the event from several perspectives</h3></div><div class="coverage-list"><a class="coverage-link" href="https://www.facebook.com/share/p/198Uct8a7r/" target="_blank" rel="noopener noreferrer"><span class="coverage-link__type">Facebook · Rafał Zwolak</span><strong>A meeting about Zamość’s future cooperation</strong><span class="coverage-link__action">Open post ↗</span></a><a class="coverage-link" href="https://www.facebook.com/share/p/18qQkk54jS/" target="_blank" rel="noopener noreferrer"><span class="coverage-link__type">Facebook · Marta Pfeifer</span><strong>Report from the twin-town meeting</strong><span class="coverage-link__action">Open post ↗</span></a><a class="coverage-link" href="https://www.zamojska.pl/artykul/6268%2Czamosc-gospodarzem-miedzynarodowego-spotkania-o-transformacji-energetycznej" target="_blank" rel="noopener noreferrer"><span class="coverage-link__type">Zamojska.pl · press</span><strong>Zamość hosts talks on energy transition</strong><span class="coverage-link__action">Read article ↗</span></a><a class="coverage-link" href="https://www.kronikatygodnia.pl/artykul/55329%2Czamosc-gospodarzem-europejskiego-projektu-ekologicznego-twin-green" target="_blank" rel="noopener noreferrer"><span class="coverage-link__type">Kronika Tygodnia · press</span><strong>Twin Green ecological project in Zamość</strong><span class="coverage-link__action">Read article ↗</span></a></div></div><div class="archive-stream"><article><p class="eyebrow">Report · 2022</p><h3>ImagE50</h3><p>Documentation from a completed international project.</p><a href="report_22/report.pdf">Open PDF ↗</a></article><article><p class="eyebrow">Archive · 2018</p><h3>Migration and Integration</h3><p>A summary of discussions held across eight towns.</p><a href="migration_project_en.html">Explore project →</a></article><article><p class="eyebrow">Memories</p><h3>Stories from shared journeys</h3><p>Participants’ accounts from Belgium, Hungary, Turkey and beyond.</p><a href="projects_history_en.html">Open archive →</a></article></div></div></section>
-    <section class="partners section" id="partnerzy"><div class="shell"><header class="section-heading section-heading--wide"><div><p class="eyebrow">A network of friendship</p><h2>More than towns on a map</h2></div><p>A partnership begins with an agreement, but lives through families, young people and local organisations.</p></header><div class="partner-flow"><div class="partner-flow__center"><span class="partner-flow__pin" aria-hidden="true"></span><strong>Zamość</strong><span>Poland</span></div>${partnerList("en")}</div><div class="partners__footer"><p>Together we organise family meetings, youth exchanges and thematic projects, hosted by a different town each year.</p><a class="text-link" href="partners_en.html">Explore the partner network →</a></div></div></section>
+    <section class="partners section" id="partnerzy"><div class="shell"><header class="section-heading section-heading--wide"><div><p class="eyebrow">A network of friendship</p><h2>More than towns on a map</h2></div><p>A partnership begins with an agreement, but lives through families, young people and local organisations.</p></header>${partnerMap("en")}<div class="partners__footer"><p>Together we organise family meetings, youth exchanges and thematic projects, hosted by a different town each year.</p></div></div></section>
     <section class="projects section" id="projekty"><div class="shell"><header class="section-heading"><div><p class="eyebrow">Working together</p><h2>Projects that bring people closer</h2></div><p>From ecology to youth, culture and the everyday experience of living in Europe.</p></header><div class="project-stream"><article class="project-chapter project-chapter--featured"><span class="project-chapter__number">01</span><div><p class="eyebrow">Ecology · 2026</p><h3>Twin Green</h3><p>Seven countries, local solutions and a shared conversation about energy, resources and circular economy.</p><a href="#aktualnosci">Read the story ↑</a></div></article><article class="project-chapter"><span class="project-chapter__number">02</span><div><p class="eyebrow">Youth</p><h3>Youth for Europe</h3><p>Young people from eight towns learn cooperation and discover Europe through one another.</p><a href="projects_en.html">About the project →</a></div></article><article class="project-chapter"><span class="project-chapter__number">03</span><div><p class="eyebrow">Resident exchange</p><h3>Zamość × Loughborough</h3><p>Annual visits, home stays and friendships built over many years.</p><a href="projects_en.html">Read the story →</a></div></article><article class="project-chapter"><span class="project-chapter__number">04</span><div><p class="eyebrow">Integration</p><h3>Migration and Integration</h3><p>A European conversation about migration, citizenship and local experience.</p><a href="migration_project_en.html">Open the summary →</a></div></article><article class="project-chapter project-chapter--image"><img src="images/site/fortress-night.jpg" width="1440" height="960" loading="lazy" alt="Illuminated Szczebrzeska Gate in Zamość at night"><div><p class="eyebrow">Culture and solidarity</p><h3>Weaving a Europe of Solidarity</h3><a href="weaving.html">Explore the project →</a></div></article></div></div></section>
     <section class="about section" id="o-nas"><div class="about-flow shell"><div class="about__statement"><p class="eyebrow">Why we are here</p><h2>Town partnerships matter when people meet.</h2></div><div class="about__copy"><p class="about__lead">Since 2003 we have helped residents of Zamość build direct relationships with people in partner towns.</p><p>We promote Zamość, its culture and history, organise exchanges, support language learning and encourage European cooperation.</p><a class="text-link" href="about_en.html">Read our story →</a></div><ol class="value-list"><li><span>01</span><strong>Meeting</strong><small>directly, not only officially</small></li><li><span>02</span><strong>Curiosity</strong><small>about languages and everyday life</small></li><li><span>03</span><strong>Cooperation</strong><small>locally and across borders</small></li></ol></div></section>
     <section class="join section" id="dolacz"><div class="join__inner shell"><div><p class="eyebrow">There is a place for you</p><h2>The next European story can begin in Zamość.</h2></div><div class="join__action"><p>Join an exchange, host visitors, help organise an event or simply learn more.</p><a class="button button--primary" href="mailto:kontakt@spmpz.zamosc.pl">kontakt@spmpz.zamosc.pl</a></div></div></section>

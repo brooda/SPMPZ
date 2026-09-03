@@ -79,6 +79,33 @@ test("page families retain the association's essential information", () => {
     assert.match(projectContent, new RegExp(project, "i"), `Missing project content ${project}`);
 });
 
+test("the complete partner network is presented on a real interactive map", () => {
+  const mapPages = ["index.html", "english.html", "partners_pl.html", "partners_en.html"];
+  const cities = ["Zamość", "Bagnols-sur-Cèze", "Braunfels", "Carcaixent", "Eeklo", "Feltre", "Kiskunfélegyháza", "Newbury", "Loughborough"];
+
+  for (const page of mapPages) {
+    const html = read(page);
+    assert.match(html, /data-partner-map/);
+    assert.match(html, /leaflet@1\.9\.4\/dist\/leaflet\.css/);
+    assert.match(html, /leaflet@1\.9\.4\/dist\/leaflet\.js/);
+    assert.match(html, /src="js\/partner-map\.mjs"/);
+    assert.match(html, /7 Cities/);
+    for (const city of cities)
+      assert.ok(html.includes(city), `${page} map index is missing ${city}`);
+  }
+
+  assert.doesNotMatch(read("index.html"), /Zobacz archiwalną listę partnerów/i);
+  assert.doesNotMatch(read("english.html"), /Explore the partner network/i);
+});
+
+test("photo footer uses only the simple label", () => {
+  for (const page of canonicalPages) {
+    const html = read(page);
+    assert.doesNotMatch(html, /Zdjęcia:|Photos:/);
+    assert.match(html, /<p>(?:Zdjęcia|Photos)<\/p>/);
+  }
+});
+
 test("legacy English entry points resolve to the canonical English homepage", () => {
   for (const alias of ["index_en.html", "index_enn.html", "en/index.html"]) {
     const html = read(alias);

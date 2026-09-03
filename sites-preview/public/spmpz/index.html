@@ -11,6 +11,9 @@
     <title>SPMPZ — Zamość bliżej Europy</title>
     <link rel="stylesheet" href="css/modern.css">
     <script type="module" src="js/modern-site.mjs"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script type="module" src="js/partner-map.mjs"></script>
   </head>
   <body data-page="home">
     <div class="page-top" id="top" aria-hidden="true"></div>
@@ -254,22 +257,33 @@
             </p>
           </header>
 
-          <div class="partner-flow" aria-label="Organizacje partnerskie SPMPZ">
-            <div class="partner-flow__center">
-              <span class="partner-flow__pin" aria-hidden="true"></span>
-              <strong>Zamość</strong>
-              <span>Polska</span>
+          <div class="partner-map-region" data-partner-map-region>
+            <div class="partner-map-stage">
+              <div class="partner-map" data-partner-map data-language="pl" role="region" aria-label="Mapa Zamościa i ośmiu miast partnerskich">
+                <p class="partner-map__fallback">Interaktywna mapa Europy</p>
+              </div>
+              <aside class="partner-map__story">
+                <p class="eyebrow">7 Cities</p>
+                <h3>Siedem miast. Osiem organizacji przy wspólnym stole.</h3>
+                <p>
+                  Sieć 7 Cities łączy organizacje z Bagnols-sur-Cèze, Braunfels, Carcaixent,
+                  Eeklo, Feltre, Kiskunfélegyházy i Newbury. Zamość wnosi do niej ósmy głos,
+                  a Loughborough pozostaje bliskim partnerem osobnej wymiany mieszkańców.
+                </p>
+              </aside>
             </div>
-            <ul class="partner-list">
-              <li><span class="country-code">FR</span><strong>Bagnols-sur-Cèze</strong><small>Francja</small></li>
-              <li><span class="country-code">DE</span><strong>Braunfels</strong><small>Niemcy</small></li>
-              <li><span class="country-code">ES</span><strong>Carcaixent</strong><small>Hiszpania</small></li>
-              <li><span class="country-code">BE</span><strong>Eeklo</strong><small>Belgia</small></li>
-              <li><span class="country-code">IT</span><strong>Feltre</strong><small>Włochy</small></li>
-              <li><span class="country-code">HU</span><strong>Kiskunfélegyháza</strong><small>Węgry</small></li>
-              <li><span class="country-code">GB</span><strong>Newbury</strong><small>Wielka Brytania</small></li>
-              <li><span class="country-code">GB</span><strong>Loughborough</strong><small>Wielka Brytania</small></li>
-            </ul>
+            <ol class="partner-map__directory" aria-label="Wybierz miasto na mapie">
+              <li><button type="button" data-map-city="zamosc"><span class="partner-map__number">Z</span><span><strong>Zamość</strong><small>Polska</small></span><span class="country-code">PL</span></button></li>
+              <li><button type="button" data-map-city="bagnols-sur-ceze"><span class="partner-map__number">01</span><span><strong>Bagnols-sur-Cèze</strong><small>Francja</small></span><span class="country-code">FR</span></button></li>
+              <li><button type="button" data-map-city="braunfels"><span class="partner-map__number">02</span><span><strong>Braunfels</strong><small>Niemcy</small></span><span class="country-code">DE</span></button></li>
+              <li><button type="button" data-map-city="carcaixent"><span class="partner-map__number">03</span><span><strong>Carcaixent</strong><small>Hiszpania</small></span><span class="country-code">ES</span></button></li>
+              <li><button type="button" data-map-city="eeklo"><span class="partner-map__number">04</span><span><strong>Eeklo</strong><small>Belgia</small></span><span class="country-code">BE</span></button></li>
+              <li><button type="button" data-map-city="feltre"><span class="partner-map__number">05</span><span><strong>Feltre</strong><small>Włochy</small></span><span class="country-code">IT</span></button></li>
+              <li><button type="button" data-map-city="kiskunfelegyhaza"><span class="partner-map__number">06</span><span><strong>Kiskunfélegyháza</strong><small>Węgry</small></span><span class="country-code">HU</span></button></li>
+              <li><button type="button" data-map-city="newbury"><span class="partner-map__number">07</span><span><strong>Newbury</strong><small>Wielka Brytania</small></span><span class="country-code">GB</span></button></li>
+              <li><button type="button" data-map-city="loughborough"><span class="partner-map__number">08</span><span><strong>Loughborough</strong><small>Wielka Brytania</small></span><span class="country-code">GB</span></button></li>
+            </ol>
+            <p class="partner-map__hint">Wybierz miasto, aby zobaczyć informacje i stronę organizacji partnerskiej.</p>
           </div>
 
           <div class="partners__footer">
@@ -277,7 +291,6 @@
               Wspólnie tworzymy programy spotkań rodzin, wymian młodzieżowych i projektów
               tematycznych — co roku w innym mieście.
             </p>
-            <a class="text-link" href="partners_pl.html">Zobacz archiwalną listę partnerów <span aria-hidden="true">→</span></a>
           </div>
         </div>
       </section>
@@ -431,7 +444,7 @@
         </nav>
         <div class="site-footer__meta">
           <p>© 2026 SPMPZ</p>
-          <p>Zdjęcia: archiwum SPMPZ, Jacek Bełz</p>
+          <p>Zdjęcia</p>
           <a href="#top">Na górę <span aria-hidden="true">↑</span></a>
         </div>
       </div>
