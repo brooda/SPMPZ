@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -19,6 +19,15 @@ const pairs = [
 
 const canonicalPages = pairs.flat();
 const read = (path) => readFileSync(resolve(root, path), "utf8");
+
+function listFiles(directory, prefix = "") {
+  return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const relativePath = prefix ? `${prefix}/${entry.name}` : entry.name;
+    return entry.isDirectory()
+      ? listFiles(resolve(directory, entry.name), relativePath)
+      : [relativePath];
+  });
+}
 
 test("every Polish page has a modern English counterpart", () => {
   for (const [polish, english] of pairs) {
@@ -160,9 +169,25 @@ test("content layout avoids card-based presentation", () => {
 });
 
 test("GPT Sites contains the same canonical pages and shared presentation", () => {
-  for (const path of [...canonicalPages, "index_en.html", "index_enn.html", "css/modern.css", "js/modern-site.mjs"])
+  for (const path of [...canonicalPages, "index_en.html", "index_enn.html", "css/modern.css", "js/modern-site.mjs", "js/gallery-lightbox.mjs"])
     assert.equal(read(`sites-preview/public/spmpz/${path}`), read(path), `Sites copy differs: ${path}`);
 
-  for (const path of ["en/index.html", "images/site/spmpz-logo.png", "images/site/hero-zamosc.jpg", "images/site/fortress-night.jpg", "images/weaving.jpg", "report_22/report.pdf", "migration.pdf", "statute_pl.pdf"])
+  for (const path of [
+    "en/index.html",
+    "images/site/spmpz-logo.png",
+    "images/site/hero-zamosc.jpg",
+    "images/site/fortress-night.jpg",
+    "images/weaving.jpg",
+    "report_22/report.pdf",
+    "migration.pdf",
+    "statute_pl.pdf",
+  ])
     assert.ok(existsSync(resolve(root, "sites-preview/public/spmpz", path)), `Sites copy missing: ${path}`);
+
+  for (const galleryFile of listFiles(resolve(root, "images/meetings"))) {
+    const path = `images/meetings/${galleryFile}`;
+    const canonical = readFileSync(resolve(root, path));
+    const preview = readFileSync(resolve(root, "sites-preview/public/spmpz", path));
+    assert.deepEqual(preview, canonical, `Sites gallery copy differs: ${path}`);
+  }
 });

@@ -101,6 +101,16 @@ export function getPartnerMarkerLabel(city) {
   return city.name;
 }
 
+export function getPartnerRoute(city) {
+  const host = partnerCities.find(({ relationship }) => relationship === "host");
+  if (!host || !city || city.id === host.id) return [];
+
+  return [
+    [host.coordinates.lat, host.coordinates.lng],
+    [city.coordinates.lat, city.coordinates.lng],
+  ];
+}
+
 export function renderPartnerPopup(city, lang = "pl") {
   const locale = lang === "en" ? "en" : "pl";
   const labels = relationshipLabels[locale];

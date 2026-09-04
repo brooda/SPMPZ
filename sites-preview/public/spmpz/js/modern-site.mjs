@@ -1,10 +1,13 @@
-const VALID_VARIANTS = new Set(["a", "b", "c"]);
+import { initializeGalleries } from "./gallery-lightbox.mjs";
+
+const VALID_VARIANTS = new Set(["a", "b", "c", "d"]);
 const DEFAULT_VARIANT = "c";
 const STORAGE_KEY = "spmpz-variant";
 const THEME_COLORS = {
   a: "#e7efe9",
   b: "#e3eaf4",
   c: "#f6e7cf",
+  d: "#f8ecdf",
 };
 
 export function resolveVariant(search, stored) {
@@ -35,6 +38,7 @@ export function initializeSite(doc, win) {
   const navigation = doc.getElementById("primary-navigation");
 
   root.classList.add("js");
+  initializeGalleries(doc);
 
   let stored = null;
   try {

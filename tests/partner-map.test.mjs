@@ -48,3 +48,15 @@ test("map markers use town names instead of numbers", async () => {
     ["Zamość", "Bagnols-sur-Cèze", "Braunfels", "Carcaixent", "Eeklo", "Feltre", "Kiskunfélegyháza", "Newbury", "Loughborough"],
   );
 });
+
+test("Europe theme routes start in Zamość and end in the selected partner town", async () => {
+  const { getPartnerRoute, partnerCities } = await import(pathToFileURL(modulePath));
+  const eeklo = partnerCities.find((city) => city.id === "eeklo");
+  const zamosc = partnerCities.find((city) => city.id === "zamosc");
+
+  assert.deepEqual(getPartnerRoute?.(eeklo), [
+    [50.7231, 23.2519],
+    [51.1845, 3.5667],
+  ]);
+  assert.deepEqual(getPartnerRoute?.(zamosc), []);
+});

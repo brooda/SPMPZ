@@ -70,21 +70,34 @@ test("news presents only the current Twin Green story", () => {
   }
 });
 
-test("coverage uses concise bilingual headings and announces upcoming photos", () => {
+test("Twin Green exposes the same compact six-photo gallery in both languages", () => {
   const polishNews = section(html, "aktualnosci", "partnerzy");
   const englishNews = section(englishHtml, "aktualnosci", "partnerzy");
 
-  assert.match(
-    polishNews,
-    /<div class="coverage__intro">\s*<h3 id="coverage-title">Relacje<\/h3>\s*<p class="eyebrow">Zdjęcia — wkrótce<\/p>/,
-  );
-  assert.doesNotMatch(polishNews, /Zobacz wydarzenie z kilku perspektyw/);
+  for (const [news, language] of [[polishNews, "Polish"], [englishNews, "English"]]) {
+    assert.equal([...news.matchAll(/data-gallery-item/g)].length, 6, `${language} gallery must contain six photos`);
+    assert.match(news, /data-meeting-gallery="twin-green-2026"/);
+    assert.match(news, /class="meeting-gallery__teaser"/);
+    assert.match(news, /<dialog class="gallery-lightbox" data-gallery-dialog/);
+    assert.doesNotMatch(news, /Zdjęcia — wkrótce|Photos — coming soon/);
 
-  assert.match(
-    englishNews,
-    /<div class="coverage__intro">\s*<h3>Coverage<\/h3>\s*<p class="eyebrow">Photos — coming soon<\/p>/,
-  );
-  assert.doesNotMatch(englishNews, /See the event from several perspectives/);
+    for (const id of ["uczestnicy", "program", "geotermia", "pgk", "wystapienie", "dyskusja"]) {
+      assert.match(news, new RegExp(`images/meetings/twin-green-2026/${id}-large\\.webp`));
+      assert.equal(existsSync(resolve(root, `images/meetings/twin-green-2026/${id}-large.webp`)), true);
+    }
+    assert.match(news, /images\/meetings\/twin-green-2026\/uczestnicy-thumb\.webp/);
+    assert.equal([...news.matchAll(/-thumb\.webp/g)].length, 1, `${language} gallery must show one thumbnail`);
+  }
+
+  assert.equal(existsSync(resolve(root, "images/meetings/twin-green-2026/uczestnicy-thumb.webp")), true);
+  for (const id of ["program", "geotermia", "pgk", "wystapienie", "dyskusja"]) {
+    assert.equal(existsSync(resolve(root, `images/meetings/twin-green-2026/${id}-thumb.webp`)), false);
+  }
+
+  assert.match(polishNews, /<h3 id="gallery-twin-green-2026-title">Galeria zdjęć<\/h3>/);
+  assert.match(polishNews, /Zobacz galerię/);
+  assert.match(englishNews, /<h3 id="gallery-twin-green-2026-title">Photo gallery<\/h3>/);
+  assert.match(englishNews, /View gallery/);
 });
 
 test("partner map story leads with people rather than organisation counts", () => {
