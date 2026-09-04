@@ -1,0 +1,91 @@
+{
+  "id": "twin-green-2026",
+  "eyebrow": {
+    "pl": "Twin Green w obiektywie",
+    "en": "Twin Green in pictures"
+  },
+  "pages": {
+    "pl": "index.html",
+    "en": "english.html"
+  },
+  "photos": [
+    {
+      "id": "uczestnicy",
+      "source": "uczestnicy.jpeg",
+      "alt": {
+        "pl": "Uczestnicy międzynarodowego spotkania Twin Green siedzą w sali konferencyjnej",
+        "en": "Participants of the international Twin Green meeting seated in a conference room"
+      },
+      "caption": {
+        "pl": "Uczestnicy spotkania podczas części konferencyjnej",
+        "en": "Participants during the conference session"
+      },
+      "credit": "Archiwum SPMPZ"
+    },
+    {
+      "id": "program",
+      "source": "program.jpeg",
+      "alt": {
+        "pl": "Prowadzący omawia program spotkania Twin Green na scenie",
+        "en": "A host presents the Twin Green meeting programme on stage"
+      },
+      "caption": {
+        "pl": "Otwarcie i prezentacja programu spotkania",
+        "en": "Opening and presentation of the meeting programme"
+      },
+      "credit": "Archiwum SPMPZ"
+    },
+    {
+      "id": "geotermia",
+      "source": "geotermia.jpeg",
+      "alt": {
+        "pl": "Prelegent przedstawia slajd o wykorzystaniu geotermii",
+        "en": "A speaker presents a slide about geothermal energy"
+      },
+      "caption": {
+        "pl": "Prezentacja poświęcona wykorzystaniu geotermii",
+        "en": "A presentation on the use of geothermal energy"
+      },
+      "credit": "Archiwum SPMPZ"
+    },
+    {
+      "id": "pgk",
+      "source": "pgk.jpeg",
+      "alt": {
+        "pl": "Prelegent podczas prezentacji Przedsiębiorstwa Gospodarki Komunalnej w Zamościu",
+        "en": "A speaker during a presentation by the Municipal Services Company in Zamość"
+      },
+      "caption": {
+        "pl": "Prezentacja Przedsiębiorstwa Gospodarki Komunalnej w Zamościu",
+        "en": "Presentation by the Municipal Services Company in Zamość"
+      },
+      "credit": "Archiwum SPMPZ"
+    },
+    {
+      "id": "wystapienie",
+      "source": "wystapienie.jpeg",
+      "alt": {
+        "pl": "Uczestniczka spotkania przemawia z mikrofonem na scenie",
+        "en": "A meeting participant speaks into a microphone on stage"
+      },
+      "caption": {
+        "pl": "Wystąpienie podczas międzynarodowego spotkania",
+        "en": "A speech during the international meeting"
+      },
+      "credit": "Archiwum SPMPZ"
+    },
+    {
+      "id": "dyskusja",
+      "source": "dyskusja.jpeg",
+      "alt": {
+        "pl": "Dwaj uczestnicy z mikrofonami podczas dyskusji na scenie",
+        "en": "Two participants with microphones during an on-stage discussion"
+      },
+      "caption": {
+        "pl": "Rozmowa i wymiana doświadczeń uczestników",
+        "en": "Discussion and exchange of experience between participants"
+      },
+      "credit": "Archiwum SPMPZ"
+    }
+  ]
+}

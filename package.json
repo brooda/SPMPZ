@@ -1,0 +1,15 @@
+{
+  "name": "spmpz-static-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "render:pages": "node scripts/render-pages.mjs",
+    "build:galleries": "node scripts/build-galleries.mjs",
+    "package:ftp": "npm run build:galleries && node scripts/package-ftp.mjs"
+  },
+  "dependencies": {
+    "sharp": "0.35.4"
+  }
+}
